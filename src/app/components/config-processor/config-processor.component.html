@@ -1,0 +1,171 @@
+<div class="card" style="width: 48rem;">
+    <h5 class="card-header">
+        Configuraciones
+    </h5>
+    <div class="card-body">
+
+
+        <h5 class="card-title">Latencias en ciclos</h5>
+        <div class="col">
+            <div class="row">
+
+                <div class="col- px-md-1">
+                    <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">ADD:</button>
+                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-ADD" ngbDropdownToggle> {{typeInstruction[0].cycle}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of range99    " (click)="changeCycle('ADD',num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col- px-md-1">
+                    <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">SUB:</button>
+                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-SUB" ngbDropdownToggle> {{typeInstruction[1].cycle}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of range99    " (click)="changeCycle('SUB',num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col- px-md-1">
+                    <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">MUL:</button>
+                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-MUL" ngbDropdownToggle> {{typeInstruction[2].cycle}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of range99    " (click)="changeCycle('MUL',num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col- px-md-1">
+                    <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">DIV:</button>
+                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-DIV" ngbDropdownToggle> {{typeInstruction[3].cycle}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of range99    " (click)="changeCycle('DIV',num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col- px-md-1">
+                    <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">ST:</button>
+                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-ST" ngbDropdownToggle> {{typeInstruction[4].cycle}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of range99    " (click)="changeCycle('ST',num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col- px-md-1">
+                    <div class="btn-group  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">LD:</button>
+                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-LD" ngbDropdownToggle> {{typeInstruction[5].cycle}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of range99    " (click)="changeCycle('LD',num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="row">
+            <p></p>
+        </div>
+        <h5 class="card-title">Dispatcher</h5>
+
+        <div class="row">
+            <div class="col">
+                <div class="btn-group bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                    <button class="btn btn-outline-danger">Grado:</button>
+                    <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-GradoDispatch" ngbDropdownToggle> {{degree}}</button>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <button class="dropdown-item" *ngFor="let degree of [1,2,3,4,5]" (click)="setDegree(degree)">{{degree}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="row">
+            <p></p>
+        </div>
+        <h5 class="card-title">Unidades Funcionales</h5>
+
+        <div class="col">
+            <div class="row">
+
+                <div class="col- px-md-1">
+                    <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">Multifunción:</button>
+                        <button [disabled]="!editingConfigs" id="btn-numMultifunction" class="btn btn-outline-danger" ngbDropdownToggle>{{numFUMultifunction}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of [0,1,2,3,4,5]" (click)="setFUMultifunction(num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col- px-md-1">
+                    <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">Aritmética:</button>
+                        <button [disabled]="!editingConfigs" id="btn-numArithmetic" class="btn btn-outline-danger" ngbDropdownToggle>{{numFUArithmetic}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of [0,1,2,3,4,5]" (click)="setFUArithmetic(num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col- px-md-1">
+                    <div class="btn-group bpadding-10" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-outline-danger">Memoria:</button>
+                        <button [disabled]="!editingConfigs" id="btn-numMemory" class="btn btn-outline-danger" ngbDropdownToggle>{{numFUMemory}}</button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <button class="dropdown-item" *ngFor="let num of [0,1,2,3,4,5]" (click)="setFUMemory(num)">{{num}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="row justify-content-md-center align-items-end" style="height: 6rem;">
+            <div class="col-">
+                <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                    <button id="btn-save" type="button" class="btn btn-outline-danger" [disabled]="!editingConfigs" (click)="saveConfiguration()">Guardar
+                    </button>
+                    <button id="btn-reset" type="button" class="btn btn-outline-danger" [disabled]="editingConfigs" (click)="editConfiguration()">Editar
+                    </button>
+                    <button id="btn-execute" type="button" class="btn btn-outline-danger" [disabled]="!executing" (click)="executeILP()">Ejecutar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+</div>

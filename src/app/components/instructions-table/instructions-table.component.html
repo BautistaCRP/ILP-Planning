@@ -1,0 +1,34 @@
+<div class="card" style="width: 26rem;">
+    <h5 class="card-header">
+        Instrucciones
+    </h5>
+    <div class="card-body">
+        <table class="table table-bordered" style="width:5cm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Instrucción</th>
+                    <th scope="col">DST</th>
+                    <th scope="col">OP1</th>
+                    <th scope="col">OP2</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let inst of instructions">
+                    <td>{{ inst.getIdString() }}</td>
+                    <td> {{ inst.getType() }}</td>
+                    <td> {{ inst.getDestinationString()}}</td>
+                    <td> {{ inst.getOP1String()}}</td>
+                    <td> {{inst.getOP2String()}}</td>
+                    <td>
+                        <button [disabled]="configurationSaved" type="button" class="close" aria-label="Close" (click)=deleteInstruction(inst)><span aria-hidden="true">&times;</span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>
