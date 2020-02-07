@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { AddInstructionComponent } from './components/add-instruction/add-instruction.component';
 import { InstructionsTableComponent } from './components/instructions-table/instructions-table.component';
 import { ConfigProcessorComponent } from './components/config-processor/config-processor.component';
+import { GraphViewComponent } from './components/graph-view/graph-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddInstructionComponent,
     InstructionsTableComponent,
-    ConfigProcessorComponent
+    ConfigProcessorComponent,
+    GraphViewComponent
   ],
   imports: [
     BrowserModule,

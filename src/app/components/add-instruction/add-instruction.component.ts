@@ -1,7 +1,7 @@
-import { GuiHandlerService } from './../../services/gui-handler.service';
-import { Component, OnInit } from '@angular/core';
-import { InstType, Instruction } from 'src/app/models/Instruction';
-import { FUType } from 'src/app/models/FunctionalUnit';
+import {GuiHandlerService} from './../../services/gui-handler.service';
+import {Component, OnInit} from '@angular/core';
+import {Instruction, InstType} from 'src/app/models/Instruction';
+import {FUType} from 'src/app/models/FunctionalUnit';
 
 
 @Component({
@@ -13,13 +13,10 @@ import { FUType } from 'src/app/models/FunctionalUnit';
 
 export class AddInstructionComponent implements OnInit {
 
-  private guiHandler: GuiHandlerService;
-
-
   registers: string[] = ['R0', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8', 'R9', 'R10', 'R11', 'R12', 'R13', 'R14', 'R15',
     'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31'];
-
-  addInstructionButtonLabels = {
+  
+    addInstructionButtonLabels = {
     type: 'INSTRUCCIÓN',
     dst: 'DST',
     op1: 'OP1',
@@ -27,13 +24,16 @@ export class AddInstructionComponent implements OnInit {
   };
 
   typesInstruction = [
-     InstType.ADD, 
-     InstType.SUB, 
-     InstType.DIV, 
-     InstType.MUL, 
-     InstType.ST, 
-     InstType.LD
+    InstType.ADD,
+    InstType.SUB,
+    InstType.DIV,
+    InstType.MUL,
+    InstType.ST,
+    InstType.LD
   ];
+
+  
+  private guiHandler: GuiHandlerService;
 
   constructor(guiHandler: GuiHandlerService) {
     this.guiHandler = guiHandler;
@@ -106,7 +106,7 @@ export class AddInstructionComponent implements OnInit {
       }
     }
     console.log(newInstruction.toString());
-    
+
     this.guiHandler.addInstruction(newInstruction);
 
   }

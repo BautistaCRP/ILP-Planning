@@ -1,3 +1,4 @@
+import { GuiHandlerService } from './../../services/gui-handler.service';
 import { InstType } from 'src/app/models/Instruction';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfigProcessorComponent implements OnInit {
 
+  private guiHandler: GuiHandlerService;
 
   private range99: number[] = (new Array(99 - 1 + 1)).fill(undefined).map((_, i) => i + 1);
 
@@ -18,27 +20,19 @@ export class ConfigProcessorComponent implements OnInit {
 
   private editingConfigs: boolean = true;
 
-  private typeInstruction = [
-    { type: InstType.ADD, cycle: 1 },
-    { type: InstType.SUB, cycle: 1 },
-    { type: InstType.MUL, cycle: 1 },
-    { type: InstType.DIV, cycle: 1 },
-    { type: InstType.ST, cycle: 1 },
-    { type: InstType.LD, cycle: 1 }
-  ];
+  private latencyADD: number = 1;
+  private latencySUB: number = 1;
+  private latencyMUL: number = 1;
+  private latencyDIV: number = 1;
+  private latencyST: number = 1;
+  private latencyLD: number = 1;
 
-  constructor() { }
+
+  constructor(guiHandler: GuiHandlerService) {
+    this.guiHandler = guiHandler;
+  }
 
   ngOnInit() { }
-
-
-  changeCycle(pos, numcycle) {
-    for (const tipoIns of this.typeInstruction) {
-      if (tipoIns.type === pos) {
-        tipoIns.cycle = numcycle;
-      }
-    }
-  }
 
 
   saveConfiguration() {
@@ -54,6 +48,7 @@ export class ConfigProcessorComponent implements OnInit {
     return this.degree;
   }
 
+  // NOTE Setters
   setDegree(degree: number) {
     this.degree = degree;
   }
@@ -70,5 +65,34 @@ export class ConfigProcessorComponent implements OnInit {
     this.numFUMemory = numFUMemory;
   }
 
+
+  setLatencyADD(latency: number){
+    this.latencyADD = latency;
+  }
+
+
+  setLatencySUB(latency: number){
+    this.latencySUB = latency;
+  }
+
+
+  setLatencyMUL(latency: number){
+    this.latencyMUL = latency;
+  }
+
+
+  setLatencyDIV(latency: number){
+    this.latencyDIV = latency;
+  }
+
+
+  setLatencyST(latency: number){
+    this.latencyST = latency;
+  }
+
+
+  setLatencyLD(latency: number){
+    this.latencyLD = latency;
+  }
 
 }

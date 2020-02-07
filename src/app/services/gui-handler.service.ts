@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class GuiHandlerService {
 
   private instructions: Array<Instruction> = new Array<Instruction>();
+  
   private instructionsSubjectQueue: BehaviorSubject<Instruction[]>
     = new BehaviorSubject<Instruction[]>(this.instructions);
 
