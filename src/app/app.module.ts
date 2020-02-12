@@ -10,6 +10,7 @@ import { AddInstructionComponent } from './components/add-instruction/add-instru
 import { InstructionsTableComponent } from './components/instructions-table/instructions-table.component';
 import { ConfigProcessorComponent } from './components/config-processor/config-processor.component';
 import { GraphViewComponent } from './components/graph-view/graph-view.component';
+import { SimulationTableViewComponent } from './components/simulation-table-view/simulation-table-view.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { GraphViewComponent } from './components/graph-view/graph-view.component
     AddInstructionComponent,
     InstructionsTableComponent,
     ConfigProcessorComponent,
-    GraphViewComponent
+    GraphViewComponent,
+    SimulationTableViewComponent
   ],
   imports: [
     BrowserModule,

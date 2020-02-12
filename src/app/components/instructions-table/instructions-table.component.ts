@@ -20,14 +20,13 @@ export class InstructionsTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.guiHandler.getInstructions().subscribe( instructions => {
+    this.guiHandler.instructions.subscribe( instructions => {
       this.instructions = instructions;
     });
   }
 
 
   deleteInstruction(inst: Instruction) {
-    this.guiHandler.testByLog('deleteInstruction: ' + inst.toString());
     this.guiHandler.deleteInstruction(inst);
 
   }

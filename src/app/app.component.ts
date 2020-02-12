@@ -1,3 +1,4 @@
+import { GuiHandlerService } from './services/gui-handler.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,18 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ILP-Planning';
+
+  private guiHandlerService: GuiHandlerService;
+
+
+
+  constructor(guiHandlerService: GuiHandlerService){
+      this.guiHandlerService = guiHandlerService;
+  }
+
+  ngOnInit() { 
+
+  }  
+
+
 }

@@ -24,13 +24,11 @@ export class Planner {
         let found = false;
         for (let i = 0; i < this.instructions.length - 1; i++) {
             const currentInstruction: Instruction = this.instructions[i];
-
             {
                 {
                     if (currentInstruction.getType() !== InstType.ST) {
                         for (let j = i + 1; j < this.instructions.length && !found; j++) {
                             const otherInstruction: Instruction = this.instructions[j];
-
 
                             if (otherInstruction.getType() !== InstType.ST) {
                                 if (otherInstruction.getType() === InstType.LD) {

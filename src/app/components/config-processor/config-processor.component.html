@@ -1,4 +1,4 @@
-<div class="card" style="width: 48rem;">
+<div class="card" style="width: 33rem;">
     <h5 class="card-header">
         Configuraciones
     </h5>
@@ -7,20 +7,22 @@
 
         <h5 class="card-title">Latencias en ciclos</h5>
         <div class="col">
-            <div class="row">
 
+
+            <div class="row">
                 <div class="col- px-md-1">
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">ADD:</button>
                         <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-ADD"
-                            ngbDropdownToggle> {{latencyADD}}</button>
+                            ngbDropdownToggle> {{processorSettings.latencyADD}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
-                                (click)="setLatencyADD(num)">{{num}}</button>
+                                (click)="processorSettings.latencyADD = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
+
 
 
                 <div class="col- px-md-1">
@@ -28,23 +30,29 @@
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">SUB:</button>
                         <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-SUB"
-                            ngbDropdownToggle> {{latencySUB}}</button>
+                            ngbDropdownToggle> {{processorSettings.latencySUB}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
-                                (click)="setLatencySUB(num)">{{num}}</button>
+                                (click)="processorSettings.latencySUB = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="row">
+                <p></p>
+            </div>
+
+            <div class="row">
                 <div class="col- px-md-1">
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">MUL:</button>
                         <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-MUL"
-                            ngbDropdownToggle> {{latencyMUL}}</button>
+                            ngbDropdownToggle> {{processorSettings.latencyMUL}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
-                                (click)="setLatencyMUL(num)">{{num}}</button>
+                                (click)="processorSettings.latencyMUL = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
@@ -54,23 +62,27 @@
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">DIV:</button>
                         <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-DIV"
-                            ngbDropdownToggle> {{latencyDIV}}</button>
+                            ngbDropdownToggle> {{processorSettings.latencyDIV}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
-                                (click)="setLatencyDIV(num)">{{num}}</button>
+                                (click)="processorSettings.latencyDIV = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
+                <p></p>
+            </div>
+            <div class="row">
                 <div class="col- px-md-1">
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">ST:</button>
                         <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-ST"
-                            ngbDropdownToggle> {{latencyST}}</button>
+                            ngbDropdownToggle> {{processorSettings.latencyST}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
-                                (click)="setLatencyST(num)">{{num}}</button>
+                                (click)="processorSettings.latencyST = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
@@ -80,16 +92,16 @@
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">LD:</button>
                         <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-LD"
-                            ngbDropdownToggle> {{latencyLD}}</button>
+                            ngbDropdownToggle> {{processorSettings.latencyLD}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
-                                (click)="setLatencyLD(num)">{{num}}</button>
+                                (click)="processorSettings.latencyLD = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
-
-
             </div>
+
+
         </div>
 
 
@@ -101,6 +113,7 @@
         <div class="row">
             <p></p>
         </div>
+
         <h5 class="card-title">Dispatcher</h5>
 
         <div class="row">
@@ -109,10 +122,10 @@
                     aria-label="Button group with nested dropdown">
                     <button class="btn btn-outline-danger">Grado:</button>
                     <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-GradoDispatch"
-                        ngbDropdownToggle> {{degree}}</button>
+                        ngbDropdownToggle> {{processorSettings.degree}}</button>
                     <div class="dropdown-menu" ngbDropdownMenu>
                         <button class="dropdown-item" *ngFor="let degree of [1,2,3,4,5]"
-                            (click)="setDegree(degree)">{{degree}}</button>
+                            (click)="processorSettings.degree = degree">{{degree}}</button>
                     </div>
                 </div>
             </div>
@@ -135,10 +148,10 @@
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">Multifunción:</button>
                         <button [disabled]="!editingConfigs" id="btn-numMultifunction" class="btn btn-outline-danger"
-                            ngbDropdownToggle>{{numFUMultifunction}}</button>
+                            ngbDropdownToggle>{{processorSettings.numFUMultifunction}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of [0,1,2,3,4,5]"
-                                (click)="setFUMultifunction(num)">{{num}}</button>
+                                (click)="processorSettings.numFUMultifunction = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
@@ -148,10 +161,10 @@
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">Aritmética:</button>
                         <button [disabled]="!editingConfigs" id="btn-numArithmetic" class="btn btn-outline-danger"
-                            ngbDropdownToggle>{{numFUArithmetic}}</button>
+                            ngbDropdownToggle>{{processorSettings.numFUArithmetic}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of [0,1,2,3,4,5]"
-                                (click)="setFUArithmetic(num)">{{num}}</button>
+                                (click)="processorSettings.numFUArithmetic = num">{{num}}</button>
                         </div>
                     </div>
                 </div>
@@ -161,10 +174,10 @@
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger">Memoria:</button>
                         <button [disabled]="!editingConfigs" id="btn-numMemory" class="btn btn-outline-danger"
-                            ngbDropdownToggle>{{numFUMemory}}</button>
+                            ngbDropdownToggle>{{processorSettings.numFUMemory}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of [0,1,2,3,4,5]"
-                                (click)="setFUMemory(num)">{{num}}</button>
+                                (click)="processorSettings.numFUMemory = num">{{num}}</button>
                         </div>
                     </div>
                 </div>

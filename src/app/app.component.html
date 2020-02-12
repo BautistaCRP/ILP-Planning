@@ -2,22 +2,36 @@
 
     <div class="container-fluid mt-4">
         <div class="row">
+
+
+
+
             <div class="col-auto mb-3">
-                <app-instructions-table></app-instructions-table>
+
+                <div class="row-auto mb-3">
+                    <app-add-instruction></app-add-instruction>
+                </div>
+
+                <div class="row-auto mb-3">
+                    <app-instructions-table *ngIf="true"></app-instructions-table>
+                </div>
             </div>
 
             <div class="col-auto mb-3">
                 <div class="row-auto  mb-3">
-                    <app-add-instruction></app-add-instruction>
-                </div>
-                <div class="row-auto mb-3">
                     <app-config-processor></app-config-processor>
                 </div>
+            </div>
 
+        </div>
+
+        <div class="row">
+            <div class="col-auto mb-3">
+                <app-simulation-table-view *ngIf="true"></app-simulation-table-view>
             </div>
 
             <div class="col-auto mb-3">
-
+                <app-graph-view *ngIf="true"></app-graph-view>
             </div>
         </div>
     </div>
