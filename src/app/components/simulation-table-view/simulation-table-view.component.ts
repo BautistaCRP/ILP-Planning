@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {GuiHandlerService} from "../../services/gui-handler.service";
 
 @Component({
   selector: 'app-simulation-table-view',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SimulationTableViewComponent implements OnInit {
 
-  constructor() { }
+  private guiHandlerService: GuiHandlerService;
+
+  constructor(guiHandlerService: GuiHandlerService) {
+    this.guiHandlerService = guiHandlerService;
+  }
 
   ngOnInit() {
+  }
+
+  public nextCycle() {
+    this.guiHandlerService.nextCycleSimulation();
+  }
+
+  public restart() {
+    this.guiHandlerService.restartSimulation();
   }
 
 }

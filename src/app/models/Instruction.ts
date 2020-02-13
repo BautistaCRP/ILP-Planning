@@ -23,7 +23,7 @@ export class Instruction {
     private destination: number;
     private cycles: number;
     private status: InstStatus;
-    private dependencies: Array<string>; // TODO think... use id's or Instructions
+    private dependencies: Array<number>; // TODO think... use id's or Instructions
 
 
     constructor(id: number, type: InstType, fuType: FUType, destination: number, op1: number, op2?: number) {
@@ -36,7 +36,7 @@ export class Instruction {
         this.fuType = fuType;
 
         this.cycles = 0;
-        this.dependencies = new Array<string>();
+        this.dependencies = new Array<number>();
         this.status = InstStatus.WAITING;
     }
 
@@ -104,19 +104,19 @@ export class Instruction {
         this.status = status;
     }
 
-    public getDependencies(): Array<string> {
+    public getDependencies(): Array<number> {
         return this.dependencies;
     }
 
     public clearDependencies() {
-        this.dependencies = new Array<string>();
+        this.dependencies = new Array<number>();
     }
 
-    public addDependency(dependency: string) {
+    public addDependency(dependency: number) {
         this.dependencies.push(dependency);
     }
 
-    public removeDependency(dependency: string) {
+    public removeDependency(dependency: number) {
         const index: number = this.dependencies.lastIndexOf(dependency);
         if (index > -1) {
             this.dependencies.splice(index, 1);
@@ -155,5 +155,8 @@ export class Instruction {
         return `Instruction (${this.id}, ${this.type}, ${this.getDestinationString()}, ${this.getOP1String()}, ${this.getOP2String()})`;
     }
 
+    public existDependency(inst: Instruction) {
+      return (this.dependencies.includes(inst.getId()));
+    }
 
 }

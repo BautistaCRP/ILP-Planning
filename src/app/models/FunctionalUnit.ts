@@ -1,53 +1,70 @@
-import {Instruction} from '../models/Instruction';
+import {Instruction, InstStatus} from '../models/Instruction';
 
 export enum FUType {
-    ARITHMETIC, MEMORY, MULTIFUNCTION
+  ARITHMETIC, MEMORY, MULTIFUNCTION
 }
+
 export class FunctionalUnit {
 
-    private type: FUType;
-    private available: boolean;
-    private countdown: number;
-    private instruction: Instruction;
+  private type: FUType;
+  private busy: boolean;
+  private countdown: number;
+  private instruction: Instruction;
 
-    constructor(type: FUType) {
-        this.type = type;
-        this.available = true;
-        this.countdown = 0;
-        this.instruction = null;
+  constructor(type: FUType) {
+    this.type = type;
+    this.busy = false;
+    this.countdown = 0;
+    this.instruction = null;
+  }
+
+  public getType(): FUType {
+    return this.type;
+  }
+
+  public setType(type: FUType) {
+    this.type = type;
+  }
+
+  public updateTimer() {
+    if (this.countdown < 0) {
+      this.countdown--;
     }
 
-    public getType(): FUType {
-        return this.type;
+    if (this.countdown === 0) {
+      this.busy = false;
+      this.instruction.setStatus(InstStatus.DONE);
+      this.instruction = null;
+      // TODO Set the instruction status as done
     }
+  }
 
-    public setType(type: FUType) {
-        this.type = type;
-    }
+  public isBusy(): boolean {
+    return this.busy;
+  }
 
-    public updateTimer() {
-        if (this.countdown < 0) {
-            this.countdown--;
-        }
+  public isFinish(): boolean {
+    return this.countdown === 0;
+  }
 
-        if (this.countdown === 0) {
-            this.available = true;
-            // TODO Set the instruction status as done
-        }
-    }
+  public reset() {
+    this.instruction = null;
+    this.countdown = 0;
+    this.busy = false;
+  }
 
-    public isAvailable(): boolean {
-        return this.available;
-    }
+  public getInstruction() {
+    return this.instruction;
+  }
 
-    public isFinish(): boolean {
-        return this.countdown === 0;
-    }
+  public removeInstruction() {
+    this.instruction = null;
+    this.busy = false;
+  }
 
-    public reset() {
-        this.instruction = null;
-        this.countdown = 0;
-        this.available = true;
-    }
+  public addInstruction(i: Instruction) {
+    this.instruction = i;
+    this.busy = true;
+  }
 
 }

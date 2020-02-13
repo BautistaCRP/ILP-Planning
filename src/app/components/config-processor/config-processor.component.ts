@@ -13,7 +13,7 @@ export class ConfigProcessorComponent implements OnInit {
 
   private range99: number[] = (new Array(99 - 1 + 1)).fill(undefined).map((_, i) => i + 1);
   private editingConfigs: boolean = true;
-
+  private executing: boolean = false;
 
   private processorSettings: ProcessorSettings = new ProcessorSettings();
 
@@ -26,12 +26,17 @@ export class ConfigProcessorComponent implements OnInit {
 
   saveConfiguration() {
     this.editingConfigs = false;
-    this.guiHandler.processorSettings = this.processorSettings
-
+    this.guiHandler.processorSettings = this.processorSettings;
+    this.executing = true;
   }
 
   editConfiguration() {
     this.editingConfigs = true;
+    this.executing = false;
+  }
+
+  executeILP(){
+    this.guiHandler.executeILP();
   }
 
 }

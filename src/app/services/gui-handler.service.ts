@@ -1,8 +1,9 @@
-import { ProcessorSettings } from '../models/ProcessorSettings';
-import { FUType } from 'src/app/models/FunctionalUnit';
-import { Instruction, InstType } from 'src/app/models/Instruction';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {ProcessorSettings} from '../models/ProcessorSettings';
+import {FUType} from 'src/app/models/FunctionalUnit';
+import {Instruction, InstType} from 'src/app/models/Instruction';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {Processor} from '../models/Processor';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,9 @@ export class GuiHandlerService {
   private _instructionsSubjectQueue: BehaviorSubject<Instruction[]>
     = new BehaviorSubject<Instruction[]>(this._instructions);
 
-  
   private _processorSettings: ProcessorSettings = new ProcessorSettings();
+
+  private _processor: Processor;
 
   constructor() {
     this.initInstructions();
@@ -27,6 +29,7 @@ export class GuiHandlerService {
 
   addInstruction(inst: Instruction) {
     inst.setId(this._instructions.length + 1);
+    this.updateInstructionCycle(inst);
     this._instructions.push(inst);
     this._instructionsSubjectQueue.next(this._instructions);
   }
@@ -59,9 +62,60 @@ export class GuiHandlerService {
   public get processorSettings(): ProcessorSettings {
     return this._processorSettings;
   }
+
   public set processorSettings(value: ProcessorSettings) {
     this._processorSettings = value;
-    console.log('set processorSettings: ',this.processorSettings)
+    console.log('set processorSettings: ', this.processorSettings);
+    this.updateAllInstructionsCycles();
+  }
+
+  private updateAllInstructionsCycles(){
+    this._instructions.forEach((instruction) => {
+      this.updateInstructionCycle(instruction);
+    });
+  }
+
+  private updateInstructionCycle(instruction: Instruction){
+    switch (instruction.getType()){
+      case InstType.ADD:
+        instruction.setCycles(this._processorSettings.latencyADD);
+        break;
+
+      case InstType.SUB:
+        instruction.setCycles(this._processorSettings.latencySUB);
+        break;
+
+      case InstType.MUL:
+        instruction.setCycles(this._processorSettings.latencyMUL);
+        break;
+
+      case InstType.DIV:
+        instruction.setCycles(this._processorSettings.latencyDIV);
+        break;
+
+      case InstType.LD:
+        instruction.setCycles(this._processorSettings.latencyLD);
+        break;
+
+      case InstType.ST:
+        instruction.setCycles(this._processorSettings.latencyST);
+        break;
+    }
+  }
+
+  public executeILP() {
+    this._processor = new Processor(this._instructions, this._processorSettings.degree);
+    this._processor.addUF(this._processorSettings.numFUArithmetic,
+                          this._processorSettings.numFUMemory,
+                          this._processorSettings.numFUMultifunction);
+  }
+
+  public nextCycleSimulation(){
+    this._processor.nextCycle();
+  }
+
+  public restartSimulation(){
+
   }
 
 }
