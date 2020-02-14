@@ -1,6 +1,7 @@
 import {FunctionalUnit, FUType} from './FunctionalUnit';
 import {Instruction, InstStatus} from './Instruction';
 import {Planner} from "./Planner";
+import {GraphNode} from "./GraphNode";
 
 export class Processor {
 
@@ -78,17 +79,17 @@ export class Processor {
     }
   }
 
-  public nextCycle(){
+  public nextCycle(): void{
     this.updateUf();
 
-    let instructionsSelected: Array<Instruction> = this.planner.getInstructions(this.cycleCounter,this.grado,this.uf);
+    let instructionsSelected: Array<GraphNode> = this.planner.getInstructions(this.cycleCounter,this.grado,this.uf);
 
     console.log("Ciclo "+this.cycleCounter+":"+"  Seleccionadas:");
     instructionsSelected.forEach((instr) => {
       console.log(instr.getId());
 
-      let posUF: number = this.getUFFree(instr);
-      this.uf[posUF].addInstruction(instr);
+      let posUF: number = this.getUFFree(instr.getInstruction());
+      this.uf[posUF].addInstruction(instr.getInstruction());
     });
 
     this.cycleCounter += 1;

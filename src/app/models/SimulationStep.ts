@@ -13,14 +13,13 @@ export class SimulationStep {
 
 
     public get cycle(): number {
-        console.log('get cycle() -> '+this._cycle);
         return this._cycle;
     }
     public set cycle(value: number) {
         this._cycle = value;
     }
 
-    
+
     public get planificatedSetString(): string {
         return this._planificatedSetString;
     }
@@ -28,7 +27,7 @@ export class SimulationStep {
         this._planificatedSetString = value;
     }
 
-    
+
     public get chosenSetString(): string {
         return this._chosenSetString;
     }

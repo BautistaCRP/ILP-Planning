@@ -29,7 +29,7 @@ export class GuiHandlerService {
 
   constructor() {
     this.initInstructions();
-    this.initSteps();
+    //this.initSteps();
   }
 
   get instructions() {
@@ -50,6 +50,11 @@ export class GuiHandlerService {
       this.recalculateID();
       this._instructionsSubjectQueue.next(this._instructions);
     }
+  }
+
+  private addSimulationStep(step: SimulationStep){
+    this._simulationSteps.push(step);
+    this._simulationStepsSubjectQueue.next(this._simulationSteps);
   }
 
   private initInstructions() {
@@ -130,6 +135,10 @@ export class GuiHandlerService {
 
   public nextCycleSimulation(){
     this._simulatorHandler.nextCycle();
+    let cycle: number = this._simulatorHandler.getCycle();
+    let cp: string = this._simulatorHandler.getCP();
+    let selectedInstructions = this._simulatorHandler.getSelectedInstructions();
+    this.addSimulationStep(new SimulationStep(cycle,cp,selectedInstructions));
 
   }
 

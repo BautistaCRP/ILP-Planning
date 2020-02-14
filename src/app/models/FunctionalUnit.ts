@@ -27,15 +27,15 @@ export class FunctionalUnit {
   }
 
   public updateTimer() {
-    if (this.countdown < 0) {
+    if (this.countdown > 0) {
       this.countdown--;
     }
 
     if (this.countdown === 0) {
+      console.log("FU fin de instruccion" + this.instruction.getId());
       this.busy = false;
       this.instruction.setStatus(InstStatus.DONE);
       this.instruction = null;
-      // TODO Set the instruction status as done
     }
   }
 
@@ -64,6 +64,7 @@ export class FunctionalUnit {
 
   public addInstruction(i: Instruction) {
     this.instruction = i;
+    this.countdown = this.instruction.getCycles();
     this.busy = true;
   }
 

@@ -19,7 +19,7 @@ export class SimulatorHandler {
                          processorSettings.numFUMultifunction);
   }
 
-  public nextCycle(){
+  public nextCycle(): void{
     this.processor.nextCycle();
   }
 
@@ -33,9 +33,9 @@ export class SimulatorHandler {
 
     for (let i = 0; i < CP.length; i++) {
       if (i != (CP.length -1)){
-        out += CP[i].getId()+",";
+        out += CP[i].getInstruction().getIdString()+",";
       } else{
-        out += CP[i].getId();
+        out += CP[i].getInstruction().getIdString();
       }
     }
 
@@ -43,14 +43,14 @@ export class SimulatorHandler {
   }
 
   public getSelectedInstructions(): string{
-    let selectedInstructions: Array<Instruction> = this.planner.getSelectedInstructions();
+    let selectedInstructions: Array<GraphNode> = this.planner.getSelectedInstructions();
     let out: string = "";
 
     for (let i = 0; i < selectedInstructions.length; i++) {
       if (i != (selectedInstructions.length -1)){
-        out += selectedInstructions[i].getId()+",";
+        out += selectedInstructions[i].getInstruction().getIdString()+",";
       } else{
-        out += selectedInstructions[i].getId();
+        out += selectedInstructions[i].getInstruction().getIdString();
       }
     }
 
