@@ -166,6 +166,7 @@ export class Graph {
         }
       });
     });
+    
     if (found){
       return true;
     } else {
