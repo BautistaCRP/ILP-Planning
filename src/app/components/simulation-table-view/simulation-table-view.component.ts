@@ -1,3 +1,4 @@
+import { SimulationStep } from './../../models/SimulationStep';
 import {Component, OnInit} from '@angular/core';
 import {GuiHandlerService} from "../../services/gui-handler.service";
 
@@ -8,21 +9,26 @@ import {GuiHandlerService} from "../../services/gui-handler.service";
 })
 export class SimulationTableViewComponent implements OnInit {
 
-  private guiHandlerService: GuiHandlerService;
+  private guiHandler: GuiHandlerService;
+
+  private simulationSteps: Array<SimulationStep>;
 
   constructor(guiHandlerService: GuiHandlerService) {
-    this.guiHandlerService = guiHandlerService;
+    this.guiHandler = guiHandlerService;
   }
 
   ngOnInit() {
+    this.guiHandler.simulationSteps.subscribe( simulationSteps => {
+      this.simulationSteps = simulationSteps;
+    });
   }
 
   public nextCycle() {
-    this.guiHandlerService.nextCycleSimulation();
+    this.guiHandler.nextCycleSimulation();
   }
 
   public restart() {
-    this.guiHandlerService.restartSimulation();
+    this.guiHandler.restartSimulation();
   }
 
 }

@@ -1,9 +1,10 @@
-import {ProcessorSettings} from '../models/ProcessorSettings';
-import {FUType} from 'src/app/models/FunctionalUnit';
-import {Instruction, InstType} from 'src/app/models/Instruction';
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {Processor} from '../models/Processor';
+import { SimulationStep } from './../models/SimulationStep';
+import { ProcessorSettings } from '../models/ProcessorSettings';
+import { FUType } from 'src/app/models/FunctionalUnit';
+import { Instruction, InstType } from 'src/app/models/Instruction';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Processor } from '../models/Processor';
 import {SimulatorHandler} from "../models/SimulatorHandler";
 
 @Injectable({
@@ -16,12 +17,19 @@ export class GuiHandlerService {
   private _instructionsSubjectQueue: BehaviorSubject<Instruction[]>
     = new BehaviorSubject<Instruction[]>(this._instructions);
 
+  private _simulationSteps: Array<SimulationStep> = new Array<SimulationStep>();
+
+  private _simulationStepsSubjectQueue: BehaviorSubject<Array<SimulationStep>>
+    = new  BehaviorSubject<Array<SimulationStep>> (this._simulationSteps);
+
+
   private _processorSettings: ProcessorSettings = new ProcessorSettings();
 
   private _simulatorHandler: SimulatorHandler;
 
   constructor() {
     this.initInstructions();
+    this.initSteps();
   }
 
   get instructions() {
@@ -54,6 +62,14 @@ export class GuiHandlerService {
     this._instructions.push(new Instruction(7, InstType.ADD, FUType.ARITHMETIC, 7, 3, 6));
   }
 
+  private initSteps(){
+    this._simulationSteps.push(new SimulationStep(1,'I1,I2,I3','I5,I6'));
+    this._simulationSteps.push(new SimulationStep(2,'I1,I2,I3','I5,I6'));
+    this._simulationSteps.push(new SimulationStep(3,'I1,I2,I3','I5,I6'));
+    this._simulationSteps.push(new SimulationStep(4,'I1,I2,I3','I5,I6'));
+    this._simulationSteps.push(new SimulationStep(5,'I1,I2,I3','I5,I6'));
+  }
+
   private recalculateID() {
     for (let i: number = 0; i < this._instructions.length; i++) {
       this._instructions[i].setId(i + 1);
@@ -70,14 +86,18 @@ export class GuiHandlerService {
     this.updateAllInstructionsCycles();
   }
 
-  private updateAllInstructionsCycles(){
+  public get simulationSteps(){
+    return this._simulationStepsSubjectQueue.asObservable();
+  }
+
+  private updateAllInstructionsCycles() {
     this._instructions.forEach((instruction) => {
       this.updateInstructionCycle(instruction);
     });
   }
 
-  private updateInstructionCycle(instruction: Instruction){
-    switch (instruction.getType()){
+  private updateInstructionCycle(instruction: Instruction) {
+    switch (instruction.getType()) {
       case InstType.ADD:
         instruction.setCycles(this._processorSettings.latencyADD);
         break;
