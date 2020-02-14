@@ -8,6 +8,7 @@ export class Planner {
     private instructions: Array<Instruction>;
     private graph: Graph;
     private CP: Array<GraphNode>;
+    private selectedInstructions: Array<Instruction>;
 
     constructor(instructions: Array<Instruction>) {
         this.instructions = instructions;
@@ -154,14 +155,18 @@ export class Planner {
 
   public getInstructions(cycle: number, grado: number, uf: Array<FunctionalUnit>) {
     this.buildCP(uf,cycle);
-    let instructionsSelected: Array<Instruction> = this.getInstructionsSelected(grado,uf);
+    this.selectedInstructions = this.getInstructionsSelected(grado,uf);
     this.updateGraph(cycle);
 
-    return instructionsSelected;
+    return this.selectedInstructions;
   }
 
   public getCP(){
       return this.CP;
+  }
+
+  public getSelectedInstructions(){
+      return this.selectedInstructions;
   }
 
 }

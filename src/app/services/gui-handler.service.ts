@@ -4,6 +4,7 @@ import {Instruction, InstType} from 'src/app/models/Instruction';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {Processor} from '../models/Processor';
+import {SimulatorHandler} from "../models/SimulatorHandler";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class GuiHandlerService {
 
   private _processorSettings: ProcessorSettings = new ProcessorSettings();
 
-  private _processor: Processor;
+  private _simulatorHandler: SimulatorHandler;
 
   constructor() {
     this.initInstructions();
@@ -104,14 +105,12 @@ export class GuiHandlerService {
   }
 
   public executeILP() {
-    this._processor = new Processor(this._instructions, this._processorSettings.degree);
-    this._processor.addUF(this._processorSettings.numFUArithmetic,
-                          this._processorSettings.numFUMemory,
-                          this._processorSettings.numFUMultifunction);
+    this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
   }
 
   public nextCycleSimulation(){
-    this._processor.nextCycle();
+    this._simulatorHandler.nextCycle();
+
   }
 
   public restartSimulation(){

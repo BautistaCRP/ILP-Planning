@@ -10,11 +10,10 @@ export class Processor {
   private planner: Planner;
   private grado;
 
-  constructor(instrucciones: Array<Instruction>,grado: number) {
+  constructor(instrucciones: Array<Instruction>,grado: number,planner: Planner) {
     this.listInstruction = instrucciones.slice(0);
-    // this.setDependenciasRAW();
     this.uf = new Array<FunctionalUnit>();
-    this.planner = new Planner(this.listInstruction);
+    this.planner = planner;
     this.grado = grado;
   }
 
