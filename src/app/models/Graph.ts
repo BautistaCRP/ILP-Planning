@@ -155,13 +155,10 @@ export class Graph {
   public hasDependencies(node: GraphNode): boolean{
     let found: boolean = false;
 
-    console.log("Node: "+node.getId());
     this.nodes.forEach((nodeCurrent: GraphNode, id: number) => {
       let dependencies: GraphNode[] = nodeCurrent.getDependencies();
       dependencies.forEach((nodeDep: GraphNode) => {
-        console.log("NodeDep: "+nodeDep.getId()+" nodeCurrent: "+node.getId());
         if(nodeDep.equals(node)){
-          console.log(nodeDep.getId()+" igual a "+node.getId());
           found = true;
         }
       });

@@ -8,6 +8,7 @@ export class Planner {
     private instructions: Array<Instruction>;
     private graph: Graph;
     private CP: Array<GraphNode>;
+    private selectedInstructions: Array<GraphNode>;
 
     constructor(instructions: Array<Instruction>) {
         this.instructions = instructions;
@@ -126,15 +127,20 @@ export class Planner {
   }
 
   private getInstructionsSelected(grado: number, uf: Array<FunctionalUnit>){
-    let instructions: Array<Instruction> = new Array<Instruction>();
-
-    //Elijo del conjunto de planificable las n instrucciones. n = grado
-    while (this.CP.length > grado){
-      this.CP.pop();
-    }
+    let instructions: Array<GraphNode> = new Array<GraphNode>();
+    let cp: Array<GraphNode> = new Array<GraphNode>();
 
     this.CP.forEach((node) => {
-      instructions.push(node.getInstruction());
+      cp.push(node);
+    });
+
+    //Elijo del conjunto de planificable las n instrucciones. n = grado
+    while (cp.length > grado){
+      cp.pop();
+    }
+
+    cp.forEach((node) => {
+      instructions.push(node);
     });
 
     return instructions;
@@ -143,9 +149,12 @@ export class Planner {
   private updateGraph(cycle: number){
 
     //eliminación en el grafo los nodos elejidos
-    this.CP.forEach((node) => {
+    this.selectedInstructions.forEach((node) => {
       node.getDependencies().forEach((nodeDep) => {
-        this.graph.setETNode(nodeDep.getId(),nodeDep.getInstLatency()+cycle);
+        console.log("node: "+node.getId());
+        console.log("ET: "+ (node.getInstLatency()+cycle));
+        console.log("ET a: "+ nodeDep.getId());
+        this.graph.setETNode(nodeDep.getId(),node.getInstLatency()+cycle);
       });
 
       this.graph.deleteNode(node.getId());
@@ -154,14 +163,18 @@ export class Planner {
 
   public getInstructions(cycle: number, grado: number, uf: Array<FunctionalUnit>) {
     this.buildCP(uf,cycle);
-    let instructionsSelected: Array<Instruction> = this.getInstructionsSelected(grado,uf);
+    this.selectedInstructions = this.getInstructionsSelected(grado,uf);
     this.updateGraph(cycle);
 
-    return instructionsSelected;
+    return this.selectedInstructions;
   }
 
   public getCP(){
       return this.CP;
+  }
+
+  public getSelectedInstructions(){
+      return this.selectedInstructions;
   }
 
 }
