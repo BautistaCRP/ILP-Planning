@@ -1,4 +1,3 @@
-import { Instruction } from './../models/Instruction';
 import { SimulationStep } from './../models/SimulationStep';
 import { ProcessorSettings } from '../models/ProcessorSettings';
 import { FUType } from 'src/app/models/FunctionalUnit';
@@ -32,7 +31,7 @@ export class GuiHandlerService {
 
   constructor() {
     this.initInstructions();
-    this.initSteps();
+    // this.initSteps();
   }
 
   get observableInstructions(): Observable<Instruction[]> {
