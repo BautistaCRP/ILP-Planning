@@ -18,7 +18,7 @@ export class SimulationTableViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.guiHandler.simulationSteps.subscribe( simulationSteps => {
+    this.guiHandler.observableSimulationSteps.subscribe( simulationSteps => {
       this.simulationSteps = simulationSteps;
     });
   }

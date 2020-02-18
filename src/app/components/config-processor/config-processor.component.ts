@@ -21,7 +21,11 @@ export class ConfigProcessorComponent implements OnInit {
     this.guiHandler = guiHandler;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.guiHandler.observableProcessorSettings.subscribe( processorSettings => {
+      this.processorSettings = processorSettings;
+    });
+   }
 
 
   saveConfiguration() {

@@ -20,7 +20,7 @@ export class InstructionsTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.guiHandler.instructions.subscribe( instructions => {
+    this.guiHandler.observableInstructions.subscribe( instructions => {
       this.instructions = instructions;
     });
   }

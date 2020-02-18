@@ -10,6 +10,11 @@ import { InstructionsTableComponent } from './components/instructions-table/inst
 import { ConfigProcessorComponent } from './components/config-processor/config-processor.component';
 import { GraphViewComponent } from './components/graph-view/graph-view.component';
 import { SimulationTableViewComponent } from './components/simulation-table-view/simulation-table-view.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomeComponent } from './components/home/home.component';
+import { SimulationComponent } from './components/simulation/simulation.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatToolbarModule, MatButtonModule, MatIconModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -18,12 +23,19 @@ import { SimulationTableViewComponent } from './components/simulation-table-view
     InstructionsTableComponent,
     ConfigProcessorComponent,
     GraphViewComponent,
-    SimulationTableViewComponent
+    SimulationTableViewComponent,
+    NavbarComponent,
+    HomeComponent,
+    SimulationComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    NgbModule,
     AppRoutingModule,
-    NgbModule
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [GuiHandlerService],
   bootstrap: [AppComponent]

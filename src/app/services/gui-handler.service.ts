@@ -1,9 +1,10 @@
+import { Instruction } from './../models/Instruction';
 import { SimulationStep } from './../models/SimulationStep';
 import { ProcessorSettings } from '../models/ProcessorSettings';
 import { FUType } from 'src/app/models/FunctionalUnit';
 import { Instruction, InstType } from 'src/app/models/Instruction';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Processor } from '../models/Processor';
 import {SimulatorHandler} from "../models/SimulatorHandler";
 
@@ -24,15 +25,17 @@ export class GuiHandlerService {
 
 
   private _processorSettings: ProcessorSettings = new ProcessorSettings();
+  private __processorSettingsSubjectQueue: BehaviorSubject<ProcessorSettings>
+    = new BehaviorSubject<ProcessorSettings> (this._processorSettings);
 
   private _simulatorHandler: SimulatorHandler;
 
   constructor() {
     this.initInstructions();
-    //this.initSteps();
+    this.initSteps();
   }
 
-  get instructions() {
+  get observableInstructions(): Observable<Instruction[]> {
     return this._instructionsSubjectQueue.asObservable();
   }
 
@@ -81,17 +84,22 @@ export class GuiHandlerService {
     }
   }
 
+  public get observableProcessorSettings(): Observable<ProcessorSettings> {
+    return this.__processorSettingsSubjectQueue.asObservable();
+  }
+
   public get processorSettings(): ProcessorSettings {
     return this._processorSettings;
   }
 
   public set processorSettings(value: ProcessorSettings) {
     this._processorSettings = value;
+    this.__processorSettingsSubjectQueue.next(this._processorSettings)
     console.log('set processorSettings: ', this.processorSettings);
     this.updateAllInstructionsCycles();
   }
 
-  public get simulationSteps(){
+  public get observableSimulationSteps(): Observable<SimulationStep[]>{
     return this._simulationStepsSubjectQueue.asObservable();
   }
 
