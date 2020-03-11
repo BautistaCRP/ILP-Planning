@@ -1,32 +1,32 @@
-import {FunctionalUnit, FUType} from './FunctionalUnit';
-import {Instruction, InstStatus} from './Instruction';
-import {Planner} from "./Planner";
-import {GraphNode} from "./GraphNode";
+import { FunctionalUnit, FUType } from './FunctionalUnit';
+import { Instruction, InstStatus } from './Instruction';
+import { Planner } from "./Planner";
+import { GraphNode } from "./GraphNode";
 
 export class Processor {
 
-  private uf: Array<FunctionalUnit>;
+  private fu: Array<FunctionalUnit>;
   private cycleCounter = 0;
   private listInstruction: Array<Instruction>;
   private planner: Planner;
-  private grado;
+  private degree: number;
 
-  constructor(instrucciones: Array<Instruction>,grado: number,planner: Planner) {
+  constructor(instrucciones: Array<Instruction>, degree: number, planner: Planner) {
     this.listInstruction = instrucciones.slice(0);
-    this.uf = new Array<FunctionalUnit>();
+    this.fu = new Array<FunctionalUnit>();
     this.planner = planner;
-    this.grado = grado;
+    this.degree = degree;
   }
 
-  public addUF(numArithmetic, numMemory, numMultifunction) {
+  public addFU(numArithmetic, numMemory, numMultifunction) {
     for (let i = 0; i < numMultifunction; i++) {
-      this.uf.push(new FunctionalUnit(FUType.MULTIFUNCTION));
+      this.fu.push(new FunctionalUnit(FUType.MULTIFUNCTION));
     }
     for (let i = 0; i < numArithmetic; i++) {
-      this.uf.push(new FunctionalUnit(FUType.ARITHMETIC));
+      this.fu.push(new FunctionalUnit(FUType.ARITHMETIC));
     }
     for (let i = 0; i < numMemory; i++) {
-      this.uf.push(new FunctionalUnit(FUType.MEMORY));
+      this.fu.push(new FunctionalUnit(FUType.MEMORY));
     }
   }
 
@@ -34,25 +34,25 @@ export class Processor {
     return this.cycleCounter;
   }
 
-  public getUF() {
-    return this.uf;
+  public getFU() {
+    return this.fu;
   }
 
-  private removeInstructionUF() {
-    for (let i = 0; i < this.uf.length; i++) {
-      if (this.uf[i].getInstruction() !== null) {
-        if (this.uf[i].getInstruction().getCycles() === 0) {
-          this.uf[i].getInstruction().setStatus(InstStatus.DONE);
-          this.uf[i].removeInstruction();
+  private removeInstructionFU() {
+    for (let i = 0; i < this.fu.length; i++) {
+      if (this.fu[i].getInstruction() !== null) {
+        if (this.fu[i].getInstruction().getCycles() === 0) {
+          this.fu[i].getInstruction().setStatus(InstStatus.DONE);
+          this.fu[i].removeInstruction();
         }
       }
     }
   }
 
   private hasDependence(inst: Instruction) {
-    for (let i = 0; i < this.uf.length; i++) {
-      if (this.uf[i].getInstruction() !== null) {
-        if (this.uf[i].getInstruction().existDependency(inst)) {
+    for (let i = 0; i < this.fu.length; i++) {
+      if (this.fu[i].getInstruction() !== null) {
+        if (this.fu[i].getInstruction().existDependency(inst)) {
           return true;
         }
       }
@@ -60,36 +60,36 @@ export class Processor {
     return false;
   }
 
-  private getUFFree(inst: Instruction) {
-    for (let i = 0; i < this.uf.length; i++) {
-      if (!this.uf[i].isBusy() && this.uf[i].getType() === inst.getFUType()) {
+  private getFreeFU(inst: Instruction) {
+    for (let i = 0; i < this.fu.length; i++) {
+      if (!this.fu[i].isBusy() && this.fu[i].getType() === inst.getFUType()) {
         return i;
-      } else if ((!this.uf[i].isBusy() && this.uf[i].getType() === FUType.MULTIFUNCTION)) {
+      } else if ((!this.fu[i].isBusy() && this.fu[i].getType() === FUType.MULTIFUNCTION)) {
         return i;
       }
     }
     return -1;
   }
 
-  private updateUf(){
-    for (let i = 0; i < this.uf.length; i++) {
-      if (this.uf[i].isBusy()){
-        this.uf[i].updateTimer();
+  private updateFU() {
+    for (let i = 0; i < this.fu.length; i++) {
+      if (this.fu[i].isBusy()) {
+        this.fu[i].updateTimer();
       }
     }
   }
 
-  public nextCycle(): void{
-    this.updateUf();
+  public nextCycle(): void {
+    this.updateFU();
 
-    let instructionsSelected: Array<GraphNode> = this.planner.getInstructions(this.cycleCounter,this.grado,this.uf);
+    let instructionsSelected: Array<GraphNode> = this.planner.getInstructions(this.cycleCounter, this.degree, this.fu);
 
-    console.log("Ciclo "+this.cycleCounter+":"+"  Seleccionadas:");
+    console.log("Ciclo " + this.cycleCounter + ":" + "  Seleccionadas:");
     instructionsSelected.forEach((instr) => {
       console.log(instr.getId());
 
-      let posUF: number = this.getUFFree(instr.getInstruction());
-      this.uf[posUF].addInstruction(instr.getInstruction());
+      let posFU: number = this.getFreeFU(instr.getInstruction());
+      this.fu[posFU].addInstruction(instr.getInstruction());
     });
 
     this.cycleCounter += 1;

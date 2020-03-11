@@ -25,6 +25,9 @@ export class ConfigProcessorComponent implements OnInit {
     this.guiHandler.observableProcessorSettings.subscribe( processorSettings => {
       this.processorSettings = processorSettings;
     });
+
+    this.saveConfiguration();
+    this.executeILP();
    }
 
 

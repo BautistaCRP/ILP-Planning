@@ -1,4 +1,7 @@
+import { GuiHandlerService } from './../../services/gui-handler.service';
 import { Component, OnInit } from '@angular/core';
+import * as go from 'gojs';
+import { Diagram } from 'gojs';
 
 @Component({
   selector: 'app-graph-view',
@@ -7,9 +10,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GraphViewComponent implements OnInit {
 
-  constructor() { }
+  private guiHandlerService: GuiHandlerService;
+
+  private diagram: Diagram;
+
+
+  constructor(guiHandlerService: GuiHandlerService) { 
+    this.guiHandlerService = guiHandlerService;
+  }
 
   ngOnInit() {
+    this.guiHandlerService.observableDiagram.subscribe( diagram => {
+      this.diagram = diagram;
+    });
+
+    this.diagram = new go.Diagram("diagramID");
+    this.diagram.initialAutoScale = Diagram.Uniform;
+    this.diagram.allowZoom = true;
+    this.diagram.toolManager.mouseWheelBehavior = go.ToolManager.WheelZoom;
+    this.diagram.contentAlignment = go.Spot.Center;
+    let layout = new go.LayeredDigraphLayout();
+    this.diagram.layout = layout;
+    layout.direction = 90;
+    layout.layerSpacing = 40;
+    layout.columnSpacing = 30;
+
+    this.guiHandlerService.diagram = this.diagram;
+
+
   }
 
 }

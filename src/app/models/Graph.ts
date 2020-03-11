@@ -12,7 +12,6 @@ export class Graph {
   }
 
   public buildDependencies() {
-    // TODO implement magic
     this.nodes.forEach((node: GraphNode, id: number) => {
       this.nodes.forEach((otherNode: GraphNode, id: number) => {
         if (node.getInstruction().existDependency(otherNode.getInstruction()))
@@ -21,7 +20,7 @@ export class Graph {
     });
   }
 
-  public getRootNodes() {
+  public getRootNodes(): GraphNode[] {
     const out: GraphNode[] = [];
 
     this.nodes.forEach((node: GraphNode, id: number) => {
@@ -30,6 +29,14 @@ export class Graph {
     });
 
     return out;
+  }
+
+  public getAllNodes(): GraphNode[] {
+    let outNodes: GraphNode[] = [];
+    this.nodes.forEach((node: GraphNode, id: number) => {
+      outNodes.push(node);
+    });
+    return outNodes;
   }
 
   public setAllAcummLatency() {
