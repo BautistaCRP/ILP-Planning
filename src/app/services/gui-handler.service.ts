@@ -135,7 +135,6 @@ export class GuiHandlerService {
     console.log("executeILP IN SERVICE");
     this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
     this.simulationOn = true;
-    this.drawDiagram(this._simulatorHandler.getGraph());
   }
 
   public nextCycleSimulation() {
