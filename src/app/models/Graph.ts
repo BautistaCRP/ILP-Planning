@@ -181,4 +181,9 @@ export class Graph {
   public setETNode(nodeId: number,ET: number){
     this.nodes.get(nodeId).setET(ET);
   }
+
+  public isEmpty():boolean{
+    return this.nodes.size === 0;
+  }
+
 }

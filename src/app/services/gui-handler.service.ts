@@ -34,13 +34,17 @@ export class GuiHandlerService {
   private _simulatorHandler: SimulatorHandler;
 
   private _simulationOn: boolean;
-  private _simulationOnSubjectQueue: BehaviorSubject<boolean> 
+  private _simulationOnSubjectQueue: BehaviorSubject<boolean>
     = new BehaviorSubject<boolean>(this._simulationOn);
+
+
+  private isFinish: boolean;
 
 
   constructor() {
     this.initInstructions();
     this._simulationOn = false;
+    this.isFinish = false;
     this._simulationOnSubjectQueue.next(this._simulationOn);
   }
 
@@ -146,17 +150,24 @@ export class GuiHandlerService {
   }
 
   public nextCycleSimulation() {
-    this._simulatorHandler.nextCycle();
-    let cycle: number = this._simulatorHandler.getCycle();
-    let ps: string = this._simulatorHandler.getPS();
-    let selectedInstructions: string = this._simulatorHandler.getSelectedInstructions();
-    this.addSimulationStep(new SimulationStep(cycle, ps, selectedInstructions));
-    this.drawDiagram(this._simulatorHandler.getGraph());
-    
+    if (!this.isFinish) {
+      this._simulatorHandler.nextCycle();
+      let cycle: number = this._simulatorHandler.getCycle();
+      let ps: string = this._simulatorHandler.getPS();
+      let selectedInstructions: string = this._simulatorHandler.getSelectedInstructions();
+      this.addSimulationStep(new SimulationStep(cycle, ps, selectedInstructions));
+      this.drawDiagram(this._simulatorHandler.getGraph());
+    }
+
+    if (this._simulatorHandler.getGraph().isEmpty()) {
+      this.isFinish = true;
+    }
+
   }
 
   public restartSimulation() {
     this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
+    this.isFinish = false;
     this.drawDiagram(this._simulatorHandler.getGraph());
     this._simulationSteps = new Array<SimulationStep>();
     this._simulationStepsSubjectQueue.next(this._simulationSteps);
@@ -165,12 +176,12 @@ export class GuiHandlerService {
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~ DIAGRAM ~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   private _diagram: Diagram;
   private _diagramSubjectQueue: BehaviorSubject<Diagram> =
     new BehaviorSubject<Diagram>(this._diagram);
 
-  
+
   private nodeDataArray: Array<Object>;
   private linkDataArray: Array<Object>;
 
@@ -190,7 +201,7 @@ export class GuiHandlerService {
     this._diagram = diagram;
     this._diagramSubjectQueue.next(this.diagram);
     this.initDiagram();
-    if(this._simulationOn){
+    if (this._simulationOn) {
       this.drawDiagram(this._simulatorHandler.getGraph());
     }
   }
@@ -235,7 +246,7 @@ export class GuiHandlerService {
           new go.Binding("text", "text"))
       );
 
-    
+
     this.nodeDataArray = []
     this.linkDataArray = [];
 
@@ -244,23 +255,25 @@ export class GuiHandlerService {
   }
 
 
-  public drawDiagram(graph: Graph): void{
+  public drawDiagram(graph: Graph): void {
     this.nodeDataArray = [];
     this.linkDataArray = [];
 
     let nodes: GraphNode[] = graph.getAllNodes();
     nodes.forEach(node => {
-      if(node.isCritical())
+      if (node.isCritical())
         this.nodeDataArray.push({ key: node.getInstruction().getId(), text: node.getInstruction().getIdString(), color: "lightblue" });
       else
-        this.nodeDataArray.push({ key: node.getInstruction().getId(), text: node.getInstruction().getIdString()});
+        this.nodeDataArray.push({ key: node.getInstruction().getId(), text: node.getInstruction().getIdString() });
       let dependencies: GraphNode[] = node.getDependencies();
       dependencies.forEach(nodeDep => {
 
         this.linkDataArray.push(
-          { from: node.getInstruction().getId(), 
-            to: nodeDep.getInstruction().getId(), 
-            text: "("+node.getInstLatency()+","+node.getAcummLatency()+")" });
+          {
+            from: node.getInstruction().getId(),
+            to: nodeDep.getInstruction().getId(),
+            text: "(" + node.getInstLatency() + "," + node.getAcummLatency() + ")"
+          });
 
       });
 
@@ -269,7 +282,7 @@ export class GuiHandlerService {
     this._diagram.model = new go.GraphLinksModel(this.nodeDataArray, this.linkDataArray);
     this._diagramSubjectQueue.next(this._diagram);
 
-    
+
 
   }
 
