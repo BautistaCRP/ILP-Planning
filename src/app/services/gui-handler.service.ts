@@ -235,6 +235,7 @@ export class GuiHandlerService {
           new go.Binding("text", "text"))
       );
 
+    
     this.nodeDataArray = []
     this.linkDataArray = [];
 
@@ -249,7 +250,10 @@ export class GuiHandlerService {
 
     let nodes: GraphNode[] = graph.getAllNodes();
     nodes.forEach(node => {
-      this.nodeDataArray.push({key: node.getInstruction().getId(), text: node.getInstruction().getIdString()});
+      if(node.isCritical())
+        this.nodeDataArray.push({ key: node.getInstruction().getId(), text: node.getInstruction().getIdString(), color: "lightblue" });
+      else
+        this.nodeDataArray.push({ key: node.getInstruction().getId(), text: node.getInstruction().getIdString()});
       let dependencies: GraphNode[] = node.getDependencies();
       dependencies.forEach(nodeDep => {
 
