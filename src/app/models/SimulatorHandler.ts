@@ -61,5 +61,5 @@ export class SimulatorHandler {
   public getGraph(): Graph {
     return this.planner.getGraph();
   }
-
+  
 }

@@ -1,3 +1,4 @@
+import { GuiHandlerService } from './../../services/gui-handler.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SimulationComponent implements OnInit {
 
-  constructor() { }
+  private guiHandlerService: GuiHandlerService;
+
+  private simulationOn: boolean;
+
+  constructor(guiHandlerService: GuiHandlerService) {
+    this.guiHandlerService = guiHandlerService;
+  }
 
   ngOnInit() {
+    this.guiHandlerService.observableSimulationOn.subscribe(simulationOn => {
+      this.simulationOn = simulationOn;
+    });
   }
 
 }

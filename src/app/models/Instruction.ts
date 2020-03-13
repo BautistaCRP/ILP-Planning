@@ -23,7 +23,7 @@ export class Instruction {
     private destination: number;
     private cycles: number;
     private status: InstStatus;
-    private dependencies: Array<number>; // TODO think... use id's or Instructions
+    private dependencies: Array<number>;
 
 
     constructor(id: number, type: InstType, fuType: FUType, destination: number, op1: number, op2?: number) {

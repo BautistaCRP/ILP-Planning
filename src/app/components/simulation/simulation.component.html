@@ -2,11 +2,11 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-auto mb-3">
-                <app-simulation-table-view *ngIf="true"></app-simulation-table-view>
+                <app-simulation-table-view *ngIf="simulationOn"></app-simulation-table-view>
             </div>
 
             <div class="col-auto mb-3">
-                <app-graph-view *ngIf="true"></app-graph-view>
+                <app-graph-view *ngIf="simulationOn"></app-graph-view>
             </div>
 
         </div>

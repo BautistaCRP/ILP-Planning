@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ProcessorSettings } from './../../models/ProcessorSettings';
 import { GuiHandlerService } from './../../services/gui-handler.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class ConfigProcessorComponent implements OnInit {
 
   private guiHandler: GuiHandlerService;
+  private router: Router;
 
   private range99: number[] = (new Array(99 - 1 + 1)).fill(undefined).map((_, i) => i + 1);
   private editingConfigs: boolean = true;
@@ -17,18 +19,16 @@ export class ConfigProcessorComponent implements OnInit {
 
   private processorSettings: ProcessorSettings = new ProcessorSettings();
 
-  constructor(guiHandler: GuiHandlerService) {
+  constructor(guiHandler: GuiHandlerService, router: Router) {
     this.guiHandler = guiHandler;
+    this.router = router;
   }
 
   ngOnInit() {
-    this.guiHandler.observableProcessorSettings.subscribe( processorSettings => {
+    this.guiHandler.observableProcessorSettings.subscribe(processorSettings => {
       this.processorSettings = processorSettings;
     });
-
-    this.saveConfiguration();
-    this.executeILP();
-   }
+  }
 
 
   saveConfiguration() {
@@ -42,8 +42,9 @@ export class ConfigProcessorComponent implements OnInit {
     this.executing = false;
   }
 
-  executeILP(){
+  executeILP() {
     this.guiHandler.executeILP();
+    this.router.navigate(['/simulation'])
   }
 
 }

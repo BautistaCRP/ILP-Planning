@@ -33,12 +33,15 @@ export class GuiHandlerService {
 
   private _simulatorHandler: SimulatorHandler;
 
-  private simulationOn: boolean;
+  private _simulationOn: boolean;
+  private _simulationOnSubjectQueue: BehaviorSubject<boolean> 
+    = new BehaviorSubject<boolean>(this._simulationOn);
 
 
   constructor() {
     this.initInstructions();
-    this.simulationOn = false;
+    this._simulationOn = false;
+    this._simulationOnSubjectQueue.next(this._simulationOn);
   }
 
   addInstruction(inst: Instruction) {
@@ -76,6 +79,10 @@ export class GuiHandlerService {
     for (let i: number = 0; i < this._instructions.length; i++) {
       this._instructions[i].setId(i + 1);
     }
+  }
+
+  public get observableSimulationOn(): Observable<boolean> {
+    return this._simulationOnSubjectQueue.asObservable();
   }
 
   public get observableProcessorSettings(): Observable<ProcessorSettings> {
@@ -134,7 +141,8 @@ export class GuiHandlerService {
   public executeILP() {
     console.log("executeILP IN SERVICE");
     this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
-    this.simulationOn = true;
+    this._simulationOn = true;
+    this._simulationOnSubjectQueue.next(this._simulationOn);
   }
 
   public nextCycleSimulation() {
@@ -148,6 +156,10 @@ export class GuiHandlerService {
   }
 
   public restartSimulation() {
+    this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
+    this.drawDiagram(this._simulatorHandler.getGraph());
+    this._simulationSteps = new Array<SimulationStep>();
+    this._simulationStepsSubjectQueue.next(this._simulationSteps);
 
   }
 
@@ -178,7 +190,7 @@ export class GuiHandlerService {
     this._diagram = diagram;
     this._diagramSubjectQueue.next(this.diagram);
     this.initDiagram();
-    if(this.simulationOn){
+    if(this._simulationOn){
       this.drawDiagram(this._simulatorHandler.getGraph());
     }
   }
