@@ -11,7 +11,7 @@
             <!-- INSTRUCCIÓN -->
             <div class="btn-group " ngbDropdown role="group" aria-label="Button group with nested dropdown">
 
-                <button [disabled]="configurationSaved" id="btn-type" class="btn btn-outline-success" ngbDropdownToggle>{{addInstructionButtonLabels.type}}</button>
+                <button id="btn-type" class="btn btn-outline-success" ngbDropdownToggle>{{addInstructionButtonLabels.type}}</button>
 
                 <div class="dropdown-menu" ngbDropdownMenu>
                     <button class="dropdown-item" *ngFor="let type of typesInstruction" (click)="change('type',type)">{{type}}</button>
@@ -21,7 +21,7 @@
             <!-- DST -->
             <div class="btn-group " ngbDropdown role="group" aria-label="Button group with nested dropdown">
 
-                <button [disabled]="configurationSaved" id="btn-dst" class="btn btn-outline-success" ngbDropdownToggle>{{addInstructionButtonLabels.dst}}</button>
+                <button id="btn-dst" class="btn btn-outline-success" ngbDropdownToggle>{{addInstructionButtonLabels.dst}}</button>
 
                 <div class="dropdown-menu" ngbDropdownMenu>
                     <button class="dropdown-item" *ngFor="let reg of registers" (click)="change('dst',reg)">{{reg}}</button>
@@ -30,7 +30,7 @@
 
             <!-- OP1 -->
             <div class="btn-group " ngbDropdown role="group" aria-label="Button group with nested dropdown">
-                <button [disabled]="configurationSaved" id="btn-op1" class="btn btn-outline-success" ngbDropdownToggle>{{addInstructionButtonLabels.op1}}</button>
+                <button id="btn-op1" class="btn btn-outline-success" ngbDropdownToggle>{{addInstructionButtonLabels.op1}}</button>
                 <div class="dropdown-menu" ngbDropdownMenu>
                     <button class="dropdown-item" *ngFor="let reg of registers" (click)="change('op1',reg)">{{reg}}</button>
                 </div>
@@ -38,7 +38,7 @@
 
             <!-- OP2 -->
             <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-                <button [disabled]="configurationSaved" id="btn-op2" class="btn btn-outline-success" ngbDropdownToggle>
+                <button id="btn-op2" class="btn btn-outline-success" ngbDropdownToggle>
                     {{addInstructionButtonLabels.op2}}</button>
                 <div class="dropdown-menu" ngbDropdownMenu>
                     <button class="dropdown-item" *ngFor="let reg of registers" (click)="change('op2',reg)">{{reg}}</button>

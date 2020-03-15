@@ -22,7 +22,7 @@
                     <td> {{ inst.getOP1String()}}</td>
                     <td> {{inst.getOP2String()}}</td>
                     <td>
-                        <button [disabled]="configurationSaved" type="button" class="close" aria-label="Close" (click)=deleteInstruction(inst)><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" aria-label="Close" (click)=deleteInstruction(inst)><span aria-hidden="true">&times;</span></button>
                     </td>
                 </tr>
             </tbody>

@@ -10,7 +10,7 @@ import { FUType } from 'src/app/models/FunctionalUnit';
 })
 export class InstructionsTableComponent implements OnInit {
 
-  private instructions: Array<Instruction>;
+  instructions: Array<Instruction>;
   private guiHandler: GuiHandlerService;
 
 

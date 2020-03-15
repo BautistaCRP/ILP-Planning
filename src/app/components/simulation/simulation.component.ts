@@ -10,7 +10,7 @@ export class SimulationComponent implements OnInit {
 
   private guiHandlerService: GuiHandlerService;
 
-  private simulationOn: boolean;
+  simulationOn: boolean;
 
   constructor(guiHandlerService: GuiHandlerService) {
     this.guiHandlerService = guiHandlerService;

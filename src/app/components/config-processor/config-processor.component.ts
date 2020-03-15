@@ -13,11 +13,11 @@ export class ConfigProcessorComponent implements OnInit {
   private guiHandler: GuiHandlerService;
   private router: Router;
 
-  private range99: number[] = (new Array(99 - 1 + 1)).fill(undefined).map((_, i) => i + 1);
-  private editingConfigs: boolean = true;
-  private executing: boolean = false;
+  range99: number[] = (new Array(99 - 1 + 1)).fill(undefined).map((_, i) => i + 1);
+  editingConfigs: boolean = true;
+  executing: boolean = false;
 
-  private processorSettings: ProcessorSettings = new ProcessorSettings();
+  processorSettings: ProcessorSettings = new ProcessorSettings();
 
   constructor(guiHandler: GuiHandlerService, router: Router) {
     this.guiHandler = guiHandler;

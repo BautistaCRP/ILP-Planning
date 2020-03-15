@@ -11,7 +11,7 @@ export class SimulationTableViewComponent implements OnInit {
 
   private guiHandler: GuiHandlerService;
 
-  private simulationSteps: Array<SimulationStep>;
+  simulationSteps: Array<SimulationStep>;
 
   constructor(guiHandlerService: GuiHandlerService) {
     this.guiHandler = guiHandlerService;
