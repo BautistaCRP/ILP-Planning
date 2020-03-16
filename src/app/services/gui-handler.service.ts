@@ -40,6 +40,15 @@ export class GuiHandlerService {
 
   private isFinish: boolean;
 
+  private _editingConfigs: boolean = true;
+  private _editingConfigsSubjectQueue: BehaviorSubject<boolean>
+  = new BehaviorSubject<boolean>(this._editingConfigs);
+
+  private _executing: boolean = false;
+  private _executingSubjectQueue: BehaviorSubject<boolean>
+  = new BehaviorSubject<boolean>(this._executing);
+
+
 
   constructor() {
     this.initInstructions();
@@ -83,6 +92,14 @@ export class GuiHandlerService {
     for (let i: number = 0; i < this._instructions.length; i++) {
       this._instructions[i].setId(i + 1);
     }
+  }
+
+  public get observableEditingConfigs(): Observable<boolean> {
+    return this._editingConfigsSubjectQueue.asObservable();
+  }
+
+  public get observableExecuting(): Observable<boolean> {
+    return this._executingSubjectQueue.asObservable();
   }
 
   public get observableSimulationOn(): Observable<boolean> {
@@ -147,6 +164,18 @@ export class GuiHandlerService {
     this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
     this._simulationOn = true;
     this._simulationOnSubjectQueue.next(this._simulationOn);
+  }
+
+  public saveCPUConfiguration(processorSettings: ProcessorSettings){
+    this._editingConfigs = false;
+    this._executing = true;
+    this._editingConfigsSubjectQueue.next(this._editingConfigs);
+    this._executingSubjectQueue.next(this._executing);
+    this.processorSettings = processorSettings;
+    // this.restartSimulation();
+    this._simulationOn = false;
+    this._simulationOnSubjectQueue.next(this._simulationOn);
+    
   }
 
   public nextCycleSimulation() {

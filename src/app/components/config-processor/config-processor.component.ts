@@ -28,13 +28,19 @@ export class ConfigProcessorComponent implements OnInit {
     this.guiHandler.observableProcessorSettings.subscribe(processorSettings => {
       this.processorSettings = processorSettings;
     });
+
+    this.guiHandler.observableEditingConfigs.subscribe(editingConfigs => {
+      this.editingConfigs = editingConfigs;
+    })
+
+    this.guiHandler.observableExecuting.subscribe(executing => {
+      this.executing = executing;
+    })
   }
 
 
   saveConfiguration() {
-    this.editingConfigs = false;
-    this.guiHandler.processorSettings = this.processorSettings;
-    this.executing = true;
+    this.guiHandler.saveCPUConfiguration(this.processorSettings)
   }
 
   editConfiguration() {
