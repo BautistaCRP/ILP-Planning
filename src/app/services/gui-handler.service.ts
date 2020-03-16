@@ -241,7 +241,7 @@ export class GuiHandlerService {
           new go.Binding("fill", "color")),
 
         $(go.TextBlock,
-          { margin: 3 },  // some room around the text
+          { margin: 3, textAlign: "center" },  // some room around the text
           // bind TextBlock.text to Node.data.key
           new go.Binding("text", "text"))
       );
@@ -259,12 +259,29 @@ export class GuiHandlerService {
     this.nodeDataArray = [];
     this.linkDataArray = [];
 
+    let rootNodes: GraphNode[] = graph.getRootNodes();
     let nodes: GraphNode[] = graph.getAllNodes();
     nodes.forEach(node => {
+      let text:string = "";
+      if (node.getET() !== -1 && !rootNodes.includes(node))
+        text =  node.getInstruction().getIdString() + "\n ET: " + node.getET();
+      else 
+      text =  node.getInstruction().getIdString();
+
       if (node.isCritical())
-        this.nodeDataArray.push({ key: node.getInstruction().getId(), text: node.getInstruction().getIdString(), color: "lightblue" });
+        this.nodeDataArray.push(
+          { 
+            key: node.getInstruction().getId(), 
+            text: text, 
+            color: "lightblue" 
+          });
       else
-        this.nodeDataArray.push({ key: node.getInstruction().getId(), text: node.getInstruction().getIdString() });
+        this.nodeDataArray.push(
+          { 
+            key: node.getInstruction().getId(), 
+            text: text
+          });
+
       let dependencies: GraphNode[] = node.getDependencies();
       dependencies.forEach(nodeDep => {
 
