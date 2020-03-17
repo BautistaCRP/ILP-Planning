@@ -7,11 +7,6 @@ span {
   align-items: center;
 }
 
-.mat-toolbar.mat-primary {
-  background: #757575;
-  color: #fff;
-}
-
 .navbar {
   background: #757575;
   color: #fff;
@@ -20,4 +15,9 @@ span {
 a:hover {
   color: #ffffff;
   text-decoration: underline;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 0;
 }
