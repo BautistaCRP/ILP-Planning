@@ -12,6 +12,11 @@ span {
   color: #fff;
 }
 
+.navbar {
+  background: #757575;
+  color: #fff;
+}
+
 a:hover {
   color: #ffffff;
   text-decoration: underline;

@@ -172,20 +172,20 @@ export class GuiHandlerService {
     this._editingConfigsSubjectQueue.next(this._editingConfigs);
     this._executingSubjectQueue.next(this._executing);
     this.processorSettings = processorSettings;
-    // this.restartSimulation();
     this._simulationOn = false;
     this._simulationOnSubjectQueue.next(this._simulationOn);
     
   }
 
   public nextCycleSimulation() {
+    this.drawDiagram(this._simulatorHandler.getGraph());
+    
     if (!this.isFinish) {
       this._simulatorHandler.nextCycle();
       let cycle: number = this._simulatorHandler.getCycle();
       let ps: string = this._simulatorHandler.getPS();
       let selectedInstructions: string = this._simulatorHandler.getSelectedInstructions();
       this.addSimulationStep(new SimulationStep(cycle, ps, selectedInstructions));
-      this.drawDiagram(this._simulatorHandler.getGraph());
     }
 
     if (this._simulatorHandler.getGraph().isEmpty()) {

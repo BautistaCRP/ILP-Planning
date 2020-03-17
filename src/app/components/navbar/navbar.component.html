@@ -1,16 +1,27 @@
-<mat-toolbar color="primary" class="mat-elevation-z8">
-
+<nav class="navbar navbar-expand-lg navbar-dark ">
     <span>
-        <mat-icon>dashboard</mat-icon>  
-        <div class="mx-auto" style="width: 170px; text-align: center;">
-            Planificación ILP   
-        </div>
-        
+        <mat-icon>dashboard</mat-icon>
+        <a class="navbar-brand" style="width: 170px; text-align: center;">Planificación ILP</a>
+
     </span>
 
-    <div class="spacer"></div>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
+      <ul class="navbar-nav mr-auto">
 
-    <a mat-button routerLink="">Inicio</a>
-    <a mat-button routerLink="simulation">Simulacion</a>
+        <li class="nav-item active">
+          <!-- <a class="nav-link" routerLink="" routerLinkActive="active">Inicio <span class="sr-only">(current)</span></a> -->
+          <a class="nav-link" routerLink="" routerLinkActive="active">Inicio</a>
+        </li>
 
-</mat-toolbar>
+        <li class="nav-item active">
+          <!-- <a class="nav-link" routerLink="about" routerLinkActive="simulation">Simulacion</a> -->
+          <a class="nav-link" routerLink="simulation" routerLinkActive="active">Simulacion</a>
+        </li>
+
+      </ul>
+    </div>
+  </nav> 
