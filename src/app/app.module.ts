@@ -15,6 +15,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SimulationComponent } from './components/simulation/simulation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule, MatButtonModule, MatIconModule} from '@angular/material';
+import { SimulationResultComponent } from './components/simulation-result/simulation-result.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {MatToolbarModule, MatButtonModule, MatIconModule} from '@angular/materia
     SimulationTableViewComponent,
     NavbarComponent,
     HomeComponent,
-    SimulationComponent
+    SimulationComponent,
+    SimulationResultComponent
   ],
   imports: [
     BrowserModule,

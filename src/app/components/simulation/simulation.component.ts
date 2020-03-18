@@ -11,6 +11,7 @@ export class SimulationComponent implements OnInit {
   private guiHandlerService: GuiHandlerService;
 
   simulationOn: boolean;
+  isFinish:boolean;
 
   constructor(guiHandlerService: GuiHandlerService) {
     this.guiHandlerService = guiHandlerService;
@@ -19,6 +20,11 @@ export class SimulationComponent implements OnInit {
   ngOnInit() {
     this.guiHandlerService.observableSimulationOn.subscribe(simulationOn => {
       this.simulationOn = simulationOn;
+    });
+
+
+    this.guiHandlerService.observableIsFinish.subscribe(isFinish => {
+      this.isFinish = isFinish;
     });
   }
 

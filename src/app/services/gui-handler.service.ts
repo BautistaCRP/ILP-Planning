@@ -38,22 +38,25 @@ export class GuiHandlerService {
     = new BehaviorSubject<boolean>(this._simulationOn);
 
 
-  private isFinish: boolean;
+  private _isFinish: boolean;
+  private _isFinishSubjectQueue: BehaviorSubject<boolean> 
+    = new BehaviorSubject<boolean>(this._isFinish);
 
   private _editingConfigs: boolean = true;
   private _editingConfigsSubjectQueue: BehaviorSubject<boolean>
-  = new BehaviorSubject<boolean>(this._editingConfigs);
+    = new BehaviorSubject<boolean>(this._editingConfigs);
 
   private _executing: boolean = false;
   private _executingSubjectQueue: BehaviorSubject<boolean>
-  = new BehaviorSubject<boolean>(this._executing);
+    = new BehaviorSubject<boolean>(this._executing);
 
 
 
   constructor() {
     this.initInstructions();
     this._simulationOn = false;
-    this.isFinish = false;
+    this._isFinish = false;
+    this._isFinishSubjectQueue.next(this._isFinish);
     this._simulationOnSubjectQueue.next(this._simulationOn);
   }
 
@@ -161,12 +164,18 @@ export class GuiHandlerService {
 
   public executeILP() {
     console.log("executeILP IN SERVICE");
-    this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
-    this._simulationOn = true;
-    this._simulationOnSubjectQueue.next(this._simulationOn);
+    if (this._simulationOn)
+      this.restartSimulation();
+    else {
+      this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
+      this._simulationOn = true;
+      this._simulationOnSubjectQueue.next(this._simulationOn);
+      this._simulationSteps = new Array<SimulationStep>();
+      this._simulationStepsSubjectQueue.next(this._simulationSteps);
+    }
   }
 
-  public saveCPUConfiguration(processorSettings: ProcessorSettings){
+  public saveCPUConfiguration(processorSettings: ProcessorSettings) {
     this._editingConfigs = false;
     this._executing = true;
     this._editingConfigsSubjectQueue.next(this._editingConfigs);
@@ -174,13 +183,13 @@ export class GuiHandlerService {
     this.processorSettings = processorSettings;
     this._simulationOn = false;
     this._simulationOnSubjectQueue.next(this._simulationOn);
-    
+
   }
 
   public nextCycleSimulation() {
     this.drawDiagram(this._simulatorHandler.getGraph());
-    
-    if (!this.isFinish) {
+
+    if (!this._isFinish) {
       this._simulatorHandler.nextCycle();
       let cycle: number = this._simulatorHandler.getCycle();
       let ps: string = this._simulatorHandler.getPS();
@@ -189,18 +198,33 @@ export class GuiHandlerService {
     }
 
     if (this._simulatorHandler.getGraph().isEmpty()) {
-      this.isFinish = true;
+      this._isFinish = true;
+      this._isFinishSubjectQueue.next(this._isFinish);
     }
 
   }
 
   public restartSimulation() {
     this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
-    this.isFinish = false;
+    this._isFinish = false;
+    this._isFinishSubjectQueue.next(this._isFinish);
     this.drawDiagram(this._simulatorHandler.getGraph());
+    this._simulationOn = true;
+    this._simulationOnSubjectQueue.next(this._simulationOn);
     this._simulationSteps = new Array<SimulationStep>();
     this._simulationStepsSubjectQueue.next(this._simulationSteps);
 
+  }
+
+  public get planificatedOrder(): string {
+    let out: string = "";
+
+    this._simulationSteps.forEach(row => {
+      if (row.chosenSetString !== "")
+        out = out.concat(row.chosenSetString).concat(",");
+    });
+
+    return out;
   }
 
 
@@ -218,12 +242,16 @@ export class GuiHandlerService {
     return this._diagram;
   }
 
-  get observableDiagram(): Observable<Diagram> {
+  public get observableDiagram(): Observable<Diagram> {
     return this._diagramSubjectQueue.asObservable();
   }
 
-  get observableInstructions(): Observable<Instruction[]> {
+  public get observableInstructions(): Observable<Instruction[]> {
     return this._instructionsSubjectQueue.asObservable();
+  }
+
+  public get observableIsFinish(): Observable<boolean>{
+    return this._isFinishSubjectQueue.asObservable();
   }
 
   public set diagram(diagram: Diagram) {
@@ -291,23 +319,23 @@ export class GuiHandlerService {
     let rootNodes: GraphNode[] = graph.getRootNodes();
     let nodes: GraphNode[] = graph.getAllNodes();
     nodes.forEach(node => {
-      let text:string = "";
+      let text: string = "";
       if (node.getET() !== -1 && !rootNodes.includes(node))
-        text =  node.getInstruction().getIdString() + "\n ET: " + node.getET();
-      else 
-      text =  node.getInstruction().getIdString();
+        text = node.getInstruction().getIdString() + "\n ET: " + node.getET();
+      else
+        text = node.getInstruction().getIdString();
 
       if (node.isCritical())
         this.nodeDataArray.push(
-          { 
-            key: node.getInstruction().getId(), 
-            text: text, 
-            color: "lightblue" 
+          {
+            key: node.getInstruction().getId(),
+            text: text,
+            color: "lightblue"
           });
       else
         this.nodeDataArray.push(
-          { 
-            key: node.getInstruction().getId(), 
+          {
+            key: node.getInstruction().getId(),
             text: text
           });
 
