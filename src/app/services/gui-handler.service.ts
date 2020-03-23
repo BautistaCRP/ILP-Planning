@@ -39,7 +39,7 @@ export class GuiHandlerService {
 
 
   private _isFinish: boolean;
-  private _isFinishSubjectQueue: BehaviorSubject<boolean> 
+  private _isFinishSubjectQueue: BehaviorSubject<boolean>
     = new BehaviorSubject<boolean>(this._isFinish);
 
   private _editingConfigs: boolean = true;
@@ -58,6 +58,16 @@ export class GuiHandlerService {
     this._isFinish = false;
     this._isFinishSubjectQueue.next(this._isFinish);
     this._simulationOnSubjectQueue.next(this._simulationOn);
+  }
+
+  private initInstructions() {
+    this._instructions.push(new Instruction(1, InstType.LD, FUType.MEMORY, 1, 6));
+    this._instructions.push(new Instruction(2, InstType.LD, FUType.MEMORY, 2, 6));
+    this._instructions.push(new Instruction(3, InstType.ADD, FUType.ARITHMETIC, 3, 1, 2));
+    this._instructions.push(new Instruction(4, InstType.LD, FUType.MEMORY, 4, 6));
+    this._instructions.push(new Instruction(5, InstType.LD, FUType.MEMORY, 5, 6));
+    this._instructions.push(new Instruction(6, InstType.DIV, FUType.ARITHMETIC, 6, 4, 5));
+    this._instructions.push(new Instruction(7, InstType.ADD, FUType.ARITHMETIC, 7, 3, 6));
   }
 
   addInstruction(inst: Instruction) {
@@ -81,36 +91,10 @@ export class GuiHandlerService {
     this._simulationStepsSubjectQueue.next(this._simulationSteps);
   }
 
-  private initInstructions() {
-    this._instructions.push(new Instruction(1, InstType.LD, FUType.MEMORY, 1, 6));
-    this._instructions.push(new Instruction(2, InstType.LD, FUType.MEMORY, 2, 6));
-    this._instructions.push(new Instruction(3, InstType.ADD, FUType.ARITHMETIC, 3, 1, 2));
-    this._instructions.push(new Instruction(4, InstType.LD, FUType.MEMORY, 4, 6));
-    this._instructions.push(new Instruction(5, InstType.LD, FUType.MEMORY, 5, 6));
-    this._instructions.push(new Instruction(6, InstType.DIV, FUType.ARITHMETIC, 6, 4, 5));
-    this._instructions.push(new Instruction(7, InstType.ADD, FUType.ARITHMETIC, 7, 3, 6));
-  }
-
   private recalculateID() {
     for (let i: number = 0; i < this._instructions.length; i++) {
       this._instructions[i].setId(i + 1);
     }
-  }
-
-  public get observableEditingConfigs(): Observable<boolean> {
-    return this._editingConfigsSubjectQueue.asObservable();
-  }
-
-  public get observableExecuting(): Observable<boolean> {
-    return this._executingSubjectQueue.asObservable();
-  }
-
-  public get observableSimulationOn(): Observable<boolean> {
-    return this._simulationOnSubjectQueue.asObservable();
-  }
-
-  public get observableProcessorSettings(): Observable<ProcessorSettings> {
-    return this.__processorSettingsSubjectQueue.asObservable();
   }
 
   public get processorSettings(): ProcessorSettings {
@@ -122,10 +106,6 @@ export class GuiHandlerService {
     this.__processorSettingsSubjectQueue.next(this._processorSettings)
     console.log('set processorSettings: ', this.processorSettings);
     this.updateAllInstructionsCycles();
-  }
-
-  public get observableSimulationSteps(): Observable<SimulationStep[]> {
-    return this._simulationStepsSubjectQueue.asObservable();
   }
 
   private updateAllInstructionsCycles() {
@@ -162,19 +142,6 @@ export class GuiHandlerService {
     }
   }
 
-  public executeILP() {
-    console.log("executeILP IN SERVICE");
-    if (this._simulationOn)
-      this.restartSimulation();
-    else {
-      this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
-      this._simulationOn = true;
-      this._simulationOnSubjectQueue.next(this._simulationOn);
-      this._simulationSteps = new Array<SimulationStep>();
-      this._simulationStepsSubjectQueue.next(this._simulationSteps);
-    }
-  }
-
   public saveCPUConfiguration(processorSettings: ProcessorSettings) {
     this._editingConfigs = false;
     this._executing = true;
@@ -201,7 +168,18 @@ export class GuiHandlerService {
       this._isFinish = true;
       this._isFinishSubjectQueue.next(this._isFinish);
     }
+  }
 
+  public executeILP() {
+    if (this._simulationOn)
+      this.restartSimulation();
+    else {
+      this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
+      this._simulationOn = true;
+      this._simulationOnSubjectQueue.next(this._simulationOn);
+      this._simulationSteps = new Array<SimulationStep>();
+      this._simulationStepsSubjectQueue.next(this._simulationSteps);
+    }
   }
 
   public restartSimulation() {
@@ -228,6 +206,29 @@ export class GuiHandlerService {
   }
 
 
+  // ~~~~~~~~~~~~~~~~~~~~ obsevable getters ~~~~~~~~~~~~~~~~~~~~
+
+  public get observableEditingConfigs(): Observable<boolean> {
+    return this._editingConfigsSubjectQueue.asObservable();
+  }
+
+  public get observableExecuting(): Observable<boolean> {
+    return this._executingSubjectQueue.asObservable();
+  }
+
+  public get observableSimulationOn(): Observable<boolean> {
+    return this._simulationOnSubjectQueue.asObservable();
+  }
+
+  public get observableProcessorSettings(): Observable<ProcessorSettings> {
+    return this.__processorSettingsSubjectQueue.asObservable();
+  }
+
+  public get observableSimulationSteps(): Observable<SimulationStep[]> {
+    return this._simulationStepsSubjectQueue.asObservable();
+  }
+
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~ DIAGRAM ~~~~~~~~~~~~~~~~~~~~~~~~~
 
   private _diagram: Diagram;
@@ -250,7 +251,7 @@ export class GuiHandlerService {
     return this._instructionsSubjectQueue.asObservable();
   }
 
-  public get observableIsFinish(): Observable<boolean>{
+  public get observableIsFinish(): Observable<boolean> {
     return this._isFinishSubjectQueue.asObservable();
   }
 
@@ -292,10 +293,12 @@ export class GuiHandlerService {
     this._diagram.nodeTemplate =
       $(go.Node, "Auto",  // the Shape automatically fits around the TextBlock
 
+        new go.Binding("location", "loc", go.Point.parse),
         $(go.Shape, "RoundedRectangle",  // use this kind of figure for the Shape
           // bind Shape.fill to Node.data.color
           { fill: $(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }), stroke: "black" },
-          new go.Binding("fill", "color")),
+          new go.Binding("fill", "color"),
+        ),
 
         $(go.TextBlock,
           { margin: 3, textAlign: "center" },  // some room around the text
@@ -336,7 +339,8 @@ export class GuiHandlerService {
         this.nodeDataArray.push(
           {
             key: node.getInstruction().getId(),
-            text: text
+            text: text,
+            loc: "0 0"
           });
 
       let dependencies: GraphNode[] = node.getDependencies();
@@ -354,10 +358,16 @@ export class GuiHandlerService {
     });
 
     this._diagram.model = new go.GraphLinksModel(this.nodeDataArray, this.linkDataArray);
+    let layout = new go.LayeredDigraphLayout();
+    this._diagram.layout = layout;
+    layout.direction = 90;
+    layout.layerSpacing = 40;
+    layout.columnSpacing = 30;
+    layout.initializeOption = go.LayeredDigraphLayout.InitDepthFirstOut
+    layout.layeringOption = go.LayeredDigraphLayout.LayerLongestPathSink
+
+
     this._diagramSubjectQueue.next(this._diagram);
-
-
-
   }
 
 

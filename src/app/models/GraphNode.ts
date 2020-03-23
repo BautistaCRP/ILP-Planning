@@ -36,7 +36,7 @@ export class GraphNode {
     return this.listDependencies.length != 0;
   }
 
-  public setCriticalPath(isCritical: boolean) {
+  public setCriticalNode(isCritical: boolean) {
     this.isCriticalNode = isCritical;
   }
 

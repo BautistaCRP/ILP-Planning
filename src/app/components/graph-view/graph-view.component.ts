@@ -29,11 +29,7 @@ export class GraphViewComponent implements OnInit {
     this.diagram.allowZoom = true;
     this.diagram.toolManager.mouseWheelBehavior = go.ToolManager.WheelZoom;
     this.diagram.contentAlignment = go.Spot.Center;
-    let layout = new go.LayeredDigraphLayout();
-    this.diagram.layout = layout;
-    layout.direction = 90;
-    layout.layerSpacing = 40;
-    layout.columnSpacing = 30;
+ 
 
     this.guiHandlerService.diagram = this.diagram;
 

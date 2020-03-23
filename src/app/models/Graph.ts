@@ -117,8 +117,19 @@ export class Graph {
     }
 
     for (let i = 0; i < critcalPath.length; i++) {
-      critcalPath[i].setCriticalPath(true);
+      critcalPath[i].setCriticalNode(true);
     }
+
+    this.getRootNodes().forEach(rootNode => {
+      if(!rootNode.isCritical()){
+        let turnIntoCritical:boolean = false;
+        rootNode.getDependencies().forEach(node => {
+          if(node.isCritical())
+            turnIntoCritical = true;
+        });
+        rootNode.setCriticalNode(turnIntoCritical);
+      }
+    });
 
     console.log("Paths: ");
     for (let i = 0; i < allPaths.length; i++) {
