@@ -1,4 +1,4 @@
-import {Instruction} from './Instruction';
+import { Instruction } from './Instruction';
 
 export class GraphNode {
 
@@ -32,7 +32,7 @@ export class GraphNode {
     this.accumLatency = accumLatency;
   }
 
-  public hasDependecy() {
+  public hasDependecy(): boolean {
     return this.listDependencies.length != 0;
   }
 
@@ -72,11 +72,11 @@ export class GraphNode {
     return this.ET;
   }
 
-  public getId(){
+  public getId() {
     return this.id;
   }
 
-  public equals(otherNode: GraphNode){
+  public equals(otherNode: GraphNode) {
     return this.id === otherNode.getId();
   }
 }

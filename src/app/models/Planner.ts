@@ -8,7 +8,7 @@ export class Planner {
   private instructions: Array<Instruction>;
   private graph: Graph;
   private PS: Array<GraphNode>; // Planificated Set
-  private selectedInstructions: Array<GraphNode>;
+  private instructionsSelected: Array<GraphNode>;
 
   constructor(instructions: Array<Instruction>) {
     this.instructions = instructions;
@@ -18,23 +18,25 @@ export class Planner {
     this.setETRootNodes();
   }
 
-  private buildGraph() {
-    for (let i = 0; i < this.instructions.length; i++) {
-      const node: GraphNode = new GraphNode(this.instructions[i]);
-      this.graph.addNode(this.instructions[i].getId(), node);
-    }
 
-    this.graph.buildDependencies();
-    this.graph.setAllAcummLatency();
-    this.graph.buildCriticalPath();
-    this.setETRootNodes();
+  public getInstructions(cycle: number, grado: number, fu: Array<FunctionalUnit>): Array<GraphNode> {
+    this.buildPS(fu, cycle);
+    this.updateInstructionsSelected(grado, fu);
+    this.updateGraph(cycle);
+
+    return this.instructionsSelected;
   }
 
-  private setETRootNodes() {
-    let rootNodes: GraphNode[] = this.graph.getRootNodes();
-    for (let i = 0; i < rootNodes.length; i++) {
-      rootNodes[i].setET(0);
-    }
+  public getPS(): Array<GraphNode> {
+    return this.PS;
+  }
+
+  public getSelectedInstructions(): Array<GraphNode> {
+    return this.instructionsSelected;
+  }
+
+  public getGraph(): Graph {
+    return this.graph;
   }
 
   public printDependencies(): void {
@@ -46,6 +48,17 @@ export class Planner {
     }
   }
 
+  private buildGraph() {
+    for (let i = 0; i < this.instructions.length; i++) {
+      const node: GraphNode = new GraphNode(this.instructions[i]);
+      this.graph.addNode(this.instructions[i].getId(), node);
+    }
+
+    this.graph.buildDependencies();
+    this.graph.initAllAcummLatencies();
+    this.graph.buildCriticalPath();
+    this.setETRootNodes();
+  }
 
   private buildDependencies() {
     let found = false;
@@ -88,7 +101,14 @@ export class Planner {
     }
   }
 
-  private getFreeFU(inst: Instruction, fu: Array<FunctionalUnit>) {
+  private setETRootNodes() {
+    let rootNodes: GraphNode[] = this.graph.getRootNodes();
+    for (let i = 0; i < rootNodes.length; i++) {
+      rootNodes[i].setET(0);
+    }
+  }
+
+  private getFreeFU(inst: Instruction, fu: Array<FunctionalUnit>): number {
     for (let i = 0; i < fu.length; i++) {
       if (!fu[i].isBusy() && fu[i].getType() === inst.getFUType()) {
         return i;
@@ -116,7 +136,7 @@ export class Planner {
       }
     }
 
-    //Ordeno eñ conjunto de planificable segun nodos criticos
+    //Ordeno el conjunto de planificable segun nodos criticos
     this.PS.sort(function (a, b) {
       if (a.isCritical())
         return -1;
@@ -126,7 +146,7 @@ export class Planner {
 
   }
 
-  private getInstructionsSelected(grado: number, fu: Array<FunctionalUnit>) {
+  private updateInstructionsSelected(grado: number, fu: Array<FunctionalUnit>) {
     let instructions: Array<GraphNode> = new Array<GraphNode>();
     let ps: Array<GraphNode> = new Array<GraphNode>();
 
@@ -143,13 +163,13 @@ export class Planner {
       instructions.push(node);
     });
 
-    return instructions;
+    this.instructionsSelected = instructions;
   }
 
   private updateGraph(cycle: number) {
 
     //eliminación en el grafo los nodos elejidos
-    this.selectedInstructions.forEach((node) => {
+    this.instructionsSelected.forEach((node) => {
       node.getDependencies().forEach((nodeDep) => {
         console.log("node: " + node.getId());
         console.log("ET: " + (node.getInstLatency() + cycle));
@@ -161,25 +181,7 @@ export class Planner {
     });
   }
 
-  public getInstructions(cycle: number, grado: number, fu: Array<FunctionalUnit>) {
-    this.buildPS(fu, cycle);
-    this.selectedInstructions = this.getInstructionsSelected(grado, fu);
-    this.updateGraph(cycle);
 
-    return this.selectedInstructions;
-  }
-
-  public getPS() {
-    return this.PS;
-  }
-
-  public getSelectedInstructions() {
-    return this.selectedInstructions;
-  }
-
-  public getGraph(): Graph {
-    return this.graph;
-  }
 
 
 }

@@ -6,7 +6,7 @@ import { GraphNode } from "./GraphNode";
 import { Graph } from "./Graph";
 
 
-export class SimulatorHandler {
+export class SimulationHandler {
 
   private processor: Processor;
   private planner: Planner;

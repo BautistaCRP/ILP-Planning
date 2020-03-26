@@ -33,8 +33,8 @@ export class FunctionalUnit {
 
     if (this.countdown === 0) {
       console.log("FU fin de instruccion" + this.instruction.getId());
-      this.busy = false;
       this.instruction.setStatus(InstStatus.DONE);
+      this.busy = false;
       this.instruction = null;
     }
   }
@@ -47,12 +47,6 @@ export class FunctionalUnit {
     return this.countdown === 0;
   }
 
-  public reset() {
-    this.instruction = null;
-    this.countdown = 0;
-    this.busy = false;
-  }
-
   public getInstruction() {
     return this.instruction;
   }
@@ -60,6 +54,7 @@ export class FunctionalUnit {
   public removeInstruction() {
     this.instruction = null;
     this.busy = false;
+    this.countdown = 0;
   }
 
   public addInstruction(i: Instruction) {

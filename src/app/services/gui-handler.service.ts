@@ -9,7 +9,7 @@ import { Instruction, InstType } from 'src/app/models/Instruction';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Processor } from '../models/Processor';
-import { SimulatorHandler } from "../models/SimulatorHandler";
+import { SimulationHandler } from "../models/SimulationHandler";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class GuiHandlerService {
   private __processorSettingsSubjectQueue: BehaviorSubject<ProcessorSettings>
     = new BehaviorSubject<ProcessorSettings>(this._processorSettings);
 
-  private _simulatorHandler: SimulatorHandler;
+  private _simulatorHandler: SimulationHandler;
 
   private _simulationOn: boolean;
   private _simulationOnSubjectQueue: BehaviorSubject<boolean>
@@ -174,7 +174,7 @@ export class GuiHandlerService {
     if (this._simulationOn)
       this.restartSimulation();
     else {
-      this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
+      this._simulatorHandler = new SimulationHandler(this._instructions, this._processorSettings);
       this._simulationOn = true;
       this._simulationOnSubjectQueue.next(this._simulationOn);
       this._simulationSteps = new Array<SimulationStep>();
@@ -183,7 +183,7 @@ export class GuiHandlerService {
   }
 
   public restartSimulation() {
-    this._simulatorHandler = new SimulatorHandler(this._instructions, this._processorSettings);
+    this._simulatorHandler = new SimulationHandler(this._instructions, this._processorSettings);
     this._isFinish = false;
     this._isFinishSubjectQueue.next(this._isFinish);
     this.drawDiagram(this._simulatorHandler.getGraph());

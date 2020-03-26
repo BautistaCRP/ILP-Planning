@@ -1,4 +1,4 @@
-import {GraphNode} from './GraphNode';
+import { GraphNode } from './GraphNode';
 
 export class Graph {
   private nodes: Map<number, GraphNode>;
@@ -39,23 +39,23 @@ export class Graph {
     return outNodes;
   }
 
-  public setAllAcummLatency() {
+  public initAllAcummLatencies() {
     const rootNodes: GraphNode[] = this.getRootNodes();
 
     for (let i = 0; i < rootNodes.length; i++) {
       let nodeRoot: GraphNode = rootNodes[i];
-      this.setAllAcumm(nodeRoot, nodeRoot.getInstLatency());
+      this.initAllAcumm(nodeRoot, nodeRoot.getInstLatency());
     }
   }
 
-  private setAllAcumm(node: GraphNode, acumm: number) {
+  private initAllAcumm(node: GraphNode, acumm: number) {
     if (node.getAcummLatency() < acumm)
       node.setAcummLatency(acumm);
 
     while (!node.isFinished()) {
       let dependencies: number[] = node.getInstruction().getDependencies();
       for (let j = 0; j < dependencies.length; j++) {
-        return this.setAllAcumm(this.nodes.get(dependencies[j]), acumm + this.nodes.get(dependencies[j]).getInstLatency());
+        return this.initAllAcumm(this.nodes.get(dependencies[j]), acumm + this.nodes.get(dependencies[j]).getInstLatency());
       }
     }
   }
@@ -121,10 +121,10 @@ export class Graph {
     }
 
     this.getRootNodes().forEach(rootNode => {
-      if(!rootNode.isCritical()){
-        let turnIntoCritical:boolean = false;
+      if (!rootNode.isCritical()) {
+        let turnIntoCritical: boolean = false;
         rootNode.getDependencies().forEach(node => {
-          if(node.isCritical())
+          if (node.isCritical())
             turnIntoCritical = true;
         });
         rootNode.setCriticalNode(turnIntoCritical);
@@ -153,12 +153,12 @@ export class Graph {
     }
   }
 
-  public getNodesByET(value: number) {
+  public getNodesByET(value: number): Array<GraphNode> {
     let nodesOut: Array<GraphNode> = new Array<GraphNode>();
 
     this.nodes.forEach((node: GraphNode, id: number) => {
-      if ( (node.getET() <= value) && (node.getET() != -1) ) {
-        console.log("node id: "+node.getId()+" ET: "+node.getET());
+      if ((node.getET() <= value) && (node.getET() != -1)) {
+        console.log("node id: " + node.getId() + " ET: " + node.getET());
         nodesOut.push(node);
       }
     });
@@ -166,34 +166,34 @@ export class Graph {
     return nodesOut;
   }
 
-  public deleteNode(id: number){
+  public deleteNode(id: number) {
     this.nodes.delete(id);
   }
 
-  public hasDependencies(node: GraphNode): boolean{
+  public hasDependencies(node: GraphNode): boolean {
     let found: boolean = false;
 
     this.nodes.forEach((nodeCurrent: GraphNode, id: number) => {
       let dependencies: GraphNode[] = nodeCurrent.getDependencies();
       dependencies.forEach((nodeDep: GraphNode) => {
-        if(nodeDep.equals(node)){
+        if (nodeDep.equals(node)) {
           found = true;
         }
       });
     });
-    
-    if (found){
+
+    if (found) {
       return true;
     } else {
       return false;
     }
   }
 
-  public setETNode(nodeId: number,ET: number){
+  public setETNode(nodeId: number, ET: number) {
     this.nodes.get(nodeId).setET(ET);
   }
 
-  public isEmpty():boolean{
+  public isEmpty(): boolean {
     return this.nodes.size === 0;
   }
 

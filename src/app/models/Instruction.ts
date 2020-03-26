@@ -155,7 +155,7 @@ export class Instruction {
         return `Instruction (${this.id}, ${this.type}, ${this.getDestinationString()}, ${this.getOP1String()}, ${this.getOP2String()})`;
     }
 
-    public existDependency(inst: Instruction) {
+    public existDependency(inst: Instruction):boolean {
       return (this.dependencies.includes(inst.getId()));
     }
 

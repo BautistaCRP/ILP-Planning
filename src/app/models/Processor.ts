@@ -5,94 +5,72 @@ import { GraphNode } from "./GraphNode";
 
 export class Processor {
 
-  private fu: Array<FunctionalUnit>;
-  private cycleCounter = 0;
-  private listInstruction: Array<Instruction>;
+  private fus: Array<FunctionalUnit>;
+  private cycleCounter: number = 0;
+  private instructions: Array<Instruction>;
   private planner: Planner;
   private degree: number;
 
   constructor(instrucciones: Array<Instruction>, degree: number, planner: Planner) {
-    this.listInstruction = instrucciones.slice(0);
-    this.fu = new Array<FunctionalUnit>();
+    this.instructions = instrucciones.slice(0);
+    this.fus = new Array<FunctionalUnit>();
     this.planner = planner;
     this.degree = degree;
   }
 
-  public addFU(numArithmetic, numMemory, numMultifunction) {
+  public addFU(numArithmetic: number, numMemory: number, numMultifunction: number) {
     for (let i = 0; i < numMultifunction; i++) {
-      this.fu.push(new FunctionalUnit(FUType.MULTIFUNCTION));
+      this.fus.push(new FunctionalUnit(FUType.MULTIFUNCTION));
     }
     for (let i = 0; i < numArithmetic; i++) {
-      this.fu.push(new FunctionalUnit(FUType.ARITHMETIC));
+      this.fus.push(new FunctionalUnit(FUType.ARITHMETIC));
     }
     for (let i = 0; i < numMemory; i++) {
-      this.fu.push(new FunctionalUnit(FUType.MEMORY));
+      this.fus.push(new FunctionalUnit(FUType.MEMORY));
     }
   }
 
-  public getCycleCounter() {
+  public getCycleCounter(): number {
     return this.cycleCounter;
   }
 
-  public getFU() {
-    return this.fu;
+  public getFUs(): Array<FunctionalUnit> {
+    return this.fus;
   }
 
-  private removeInstructionFU() {
-    for (let i = 0; i < this.fu.length; i++) {
-      if (this.fu[i].getInstruction() !== null) {
-        if (this.fu[i].getInstruction().getCycles() === 0) {
-          this.fu[i].getInstruction().setStatus(InstStatus.DONE);
-          this.fu[i].removeInstruction();
-        }
-      }
-    }
+  public nextCycle(): void {
+    this.updateFUs();
+
+    let instructionsSelected: Array<GraphNode> = this.planner.getInstructions(this.cycleCounter, this.degree, this.fus);
+
+    console.log("Ciclo " + this.cycleCounter + ":" + "  Seleccionadas:");
+    instructionsSelected.forEach((instr) => {
+      console.log(instr.getId());
+
+      let posFU: number = this.getFreeFUIndex(instr.getInstruction());
+      this.fus[posFU].addInstruction(instr.getInstruction());
+    });
+
+    this.cycleCounter += 1;
   }
 
-  private hasDependence(inst: Instruction) {
-    for (let i = 0; i < this.fu.length; i++) {
-      if (this.fu[i].getInstruction() !== null) {
-        if (this.fu[i].getInstruction().existDependency(inst)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  private getFreeFU(inst: Instruction) {
-    for (let i = 0; i < this.fu.length; i++) {
-      if (!this.fu[i].isBusy() && this.fu[i].getType() === inst.getFUType()) {
+  private getFreeFUIndex(inst: Instruction):number {
+    for (let i = 0; i < this.fus.length; i++) {
+      if (!this.fus[i].isBusy() && this.fus[i].getType() === inst.getFUType()) {
         return i;
-      } else if ((!this.fu[i].isBusy() && this.fu[i].getType() === FUType.MULTIFUNCTION)) {
+      } else if ((!this.fus[i].isBusy() && this.fus[i].getType() === FUType.MULTIFUNCTION)) {
         return i;
       }
     }
     return -1;
   }
 
-  private updateFU() {
-    for (let i = 0; i < this.fu.length; i++) {
-      if (this.fu[i].isBusy()) {
-        this.fu[i].updateTimer();
+  private updateFUs() {
+    for (let i = 0; i < this.fus.length; i++) {
+      if (this.fus[i].isBusy()) {
+        this.fus[i].updateTimer();
       }
     }
-  }
-
-  public nextCycle(): void {
-    this.updateFU();
-
-    let instructionsSelected: Array<GraphNode> = this.planner.getInstructions(this.cycleCounter, this.degree, this.fu);
-
-    console.log("Ciclo " + this.cycleCounter + ":" + "  Seleccionadas:");
-    instructionsSelected.forEach((instr) => {
-      console.log(instr.getId());
-
-      let posFU: number = this.getFreeFU(instr.getInstruction());
-      this.fu[posFU].addInstruction(instr.getInstruction());
-    });
-
-    this.cycleCounter += 1;
   }
 
 
