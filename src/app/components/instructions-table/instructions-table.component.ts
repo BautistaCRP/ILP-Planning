@@ -31,6 +31,10 @@ export class InstructionsTableComponent implements OnInit {
 
   }
 
+  clearInstructions(){
+    this.guiHandler.clearInstructions();
+  }
+
 
 
 

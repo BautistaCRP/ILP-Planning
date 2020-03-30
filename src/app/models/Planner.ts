@@ -15,11 +15,10 @@ export class Planner {
     this.buildDependencies();
     this.graph = new Graph();
     this.buildGraph();
-    this.setETRootNodes();
   }
 
 
-  public getInstructions(cycle: number, grado: number, fu: Array<FunctionalUnit>): Array<GraphNode> {
+  public getInstructionsSelected(cycle: number, grado: number, fu: Array<FunctionalUnit>): Array<GraphNode> {
     this.buildPS(fu, cycle);
     this.updateInstructionsSelected(grado, fu);
     this.updateGraph(cycle);

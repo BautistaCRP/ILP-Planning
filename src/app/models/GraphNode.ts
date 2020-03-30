@@ -32,10 +32,6 @@ export class GraphNode {
     this.accumLatency = accumLatency;
   }
 
-  public hasDependecy(): boolean {
-    return this.listDependencies.length != 0;
-  }
-
   public setCriticalNode(isCritical: boolean) {
     this.isCriticalNode = isCritical;
   }

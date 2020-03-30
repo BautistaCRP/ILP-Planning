@@ -86,6 +86,11 @@ export class GuiHandlerService {
     }
   }
 
+  clearInstructions(){
+    this._instructions =  new Array<Instruction>();
+    this._instructionsSubjectQueue.next(this._instructions);
+  }
+
   private addSimulationStep(step: SimulationStep) {
     this._simulationSteps.push(step);
     this._simulationStepsSubjectQueue.next(this._simulationSteps);
