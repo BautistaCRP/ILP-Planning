@@ -215,17 +215,20 @@
 
 
         <div class="row justify-content-md-center align-items-end" style="height: 6rem;">
-            <div class="col-">
-                <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-                    <button id="btn-save" type="button" class="btn btn-outline-danger" [disabled]="!editingConfigs"
-                        (click)="saveConfiguration()">Guardar
-                    </button>
-                    <button id="btn-reset" type="button" class="btn btn-outline-danger" [disabled]="editingConfigs"
-                        (click)="editConfiguration()">Editar
-                    </button>
-                    <button id="btn-execute" type="button" class="btn btn-outline-danger" [disabled]="!executing"
-                        (click)="executeILP()">Ejecutar
-                    </button>
+            <div class="col">
+
+                <div class="d-flex justify-content-center">
+                    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <button id="btn-save" type="button" class="btn btn-outline-danger" [disabled]="!editingConfigs"
+                            (click)="saveConfiguration()">Guardar
+                        </button>
+                        <button id="btn-reset" type="button" class="btn btn-outline-danger" [disabled]="editingConfigs"
+                            (click)="editConfiguration()">Editar
+                        </button>
+                        <button id="btn-execute" type="button" class="btn btn-outline-danger" [disabled]="!executing"
+                            (click)="executeILP()">Ejecutar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

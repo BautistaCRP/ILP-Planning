@@ -16,6 +16,7 @@ import { SimulationComponent } from './components/simulation/simulation.componen
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule, MatButtonModule, MatIconModule} from '@angular/material';
 import { SimulationResultComponent } from './components/simulation-result/simulation-result.component';
+import { LoadExamplesComponent } from './components/load-examples/load-examples.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SimulationResultComponent } from './components/simulation-result/simula
     NavbarComponent,
     HomeComponent,
     SimulationComponent,
-    SimulationResultComponent
+    SimulationResultComponent,
+    LoadExamplesComponent
   ],
   imports: [
     BrowserModule,

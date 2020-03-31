@@ -53,14 +53,14 @@ export class GuiHandlerService {
 
 
   constructor() {
-    this.initInstructions();
+    this.initExample3();
     this._simulationOn = false;
     this._isFinish = false;
     this._isFinishSubjectQueue.next(this._isFinish);
     this._simulationOnSubjectQueue.next(this._simulationOn);
   }
 
-  private initInstructions() {
+  private initExample1() {
     this._instructions.push(new Instruction(1, InstType.LD, FUType.MEMORY, 1, 6));
     this._instructions.push(new Instruction(2, InstType.LD, FUType.MEMORY, 2, 6));
     this._instructions.push(new Instruction(3, InstType.ADD, FUType.ARITHMETIC, 3, 1, 2));
@@ -68,6 +68,49 @@ export class GuiHandlerService {
     this._instructions.push(new Instruction(5, InstType.LD, FUType.MEMORY, 5, 6));
     this._instructions.push(new Instruction(6, InstType.DIV, FUType.ARITHMETIC, 6, 4, 5));
     this._instructions.push(new Instruction(7, InstType.ADD, FUType.ARITHMETIC, 7, 3, 6));
+  }
+
+  private initExample2() {
+    this._instructions.push(new Instruction(1, InstType.LD, FUType.MEMORY, 1, 10));
+    this._instructions.push(new Instruction(2, InstType.LD, FUType.MEMORY, 2, 11));
+    this._instructions.push(new Instruction(3, InstType.MUL, FUType.ARITHMETIC, 3, 1, 2));
+    this._instructions.push(new Instruction(4, InstType.ST, FUType.MEMORY, 12, 13));
+    this._instructions.push(new Instruction(5, InstType.LD, FUType.MEMORY, 4, 13));
+    this._instructions.push(new Instruction(6, InstType.LD, FUType.MEMORY, 5, 14));
+    this._instructions.push(new Instruction(7, InstType.DIV, FUType.ARITHMETIC, 6, 5, 4));
+    this._instructions.push(new Instruction(8, InstType.SUB, FUType.ARITHMETIC, 7, 3, 6));
+    this._instructions.push(new Instruction(9, InstType.ST, FUType.MEMORY, 15, 7));
+  }
+
+  private initExample3() {
+    this._instructions.push(new Instruction(1, InstType.LD, FUType.MEMORY, 1, 10));
+    this._instructions.push(new Instruction(2, InstType.LD, FUType.MEMORY, 2, 11));
+    this._instructions.push(new Instruction(3, InstType.LD, FUType.MEMORY, 3, 12));
+    this._instructions.push(new Instruction(4, InstType.LD, FUType.MEMORY, 4, 13));
+    this._instructions.push(new Instruction(5, InstType.ADD, FUType.ARITHMETIC, 5, 1, 2));
+    this._instructions.push(new Instruction(6, InstType.MUL, FUType.ARITHMETIC, 6, 1, 5));
+    this._instructions.push(new Instruction(7, InstType.SUB, FUType.ARITHMETIC, 7, 3, 4));
+    this._instructions.push(new Instruction(8, InstType.ADD, FUType.ARITHMETIC, 8, 6, 7));
+    this._instructions.push(new Instruction(9, InstType.ST, FUType.MEMORY, 14, 8));
+  }
+
+
+  public loadExample1(){
+    this._instructions =  new Array<Instruction>();
+    this.initExample1();
+    this._instructionsSubjectQueue.next(this._instructions);
+  }
+
+  public loadExample2(){
+    this._instructions =  new Array<Instruction>();
+    this.initExample2();
+    this._instructionsSubjectQueue.next(this._instructions);
+  }
+
+  public loadExample3(){
+    this._instructions =  new Array<Instruction>();
+    this.initExample3();
+    this._instructionsSubjectQueue.next(this._instructions);
   }
 
   addInstruction(inst: Instruction) {
