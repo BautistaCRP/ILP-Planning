@@ -1,4 +1,3 @@
-import { Router } from '@angular/router';
 import { ProcessorSettings } from './../../models/ProcessorSettings';
 import { GuiHandlerService } from './../../services/gui-handler.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,17 +10,14 @@ import { Component, OnInit } from '@angular/core';
 export class ConfigProcessorComponent implements OnInit {
 
   private guiHandler: GuiHandlerService;
-  private router: Router;
+
 
   range99: number[] = (new Array(99 - 1 + 1)).fill(undefined).map((_, i) => i + 1);
-  editingConfigs: boolean = true;
-  executing: boolean = false;
 
   processorSettings: ProcessorSettings = new ProcessorSettings();
 
-  constructor(guiHandler: GuiHandlerService, router: Router) {
+  constructor(guiHandler: GuiHandlerService) {
     this.guiHandler = guiHandler;
-    this.router = router;
   }
 
   ngOnInit() {
@@ -29,28 +25,14 @@ export class ConfigProcessorComponent implements OnInit {
       this.processorSettings = processorSettings;
     });
 
-    this.guiHandler.observableEditingConfigs.subscribe(editingConfigs => {
-      this.editingConfigs = editingConfigs;
-    })
 
-    this.guiHandler.observableExecuting.subscribe(executing => {
-      this.executing = executing;
+    this.guiHandler.observableRequestPS.subscribe( foo => {
+      this.updateProcessorSettings();
     })
   }
 
-
-  saveConfiguration() {
-    this.guiHandler.saveCPUConfiguration(this.processorSettings)
-  }
-
-  editConfiguration() {
-    this.editingConfigs = true;
-    this.executing = false;
-  }
-
-  executeILP() {
-    this.guiHandler.executeILP();
-    this.router.navigate(['/simulation'])
+  updateProcessorSettings() {
+    this.guiHandler.processorSettings = this.processorSettings;
   }
 
 }

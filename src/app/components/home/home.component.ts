@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { GuiHandlerService } from './../../services/gui-handler.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,12 +10,45 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   private guiHandlerService: GuiHandlerService;
+  private router: Router;
 
-  constructor(guiHandlerService: GuiHandlerService){
+  public homeDisable: boolean;
+
+  editing: boolean = true;
+  executing: boolean = false;
+
+  constructor(guiHandlerService: GuiHandlerService, router: Router){
       this.guiHandlerService = guiHandlerService;
+      this.router = router;
   }
 
   ngOnInit() {
+
+    this.guiHandlerService.observableEditing.subscribe(editingConfigs => {
+      this.editing = editingConfigs;
+    })
+
+    this.guiHandlerService.observableExecuting.subscribe(executing => {
+      this.executing = executing;
+    })
+  }
+
+
+  saveConfiguration() {
+    this.editing = false;
+    this.guiHandlerService.editing = this.editing;
+  }
+
+  editConfiguration() {
+
+    this.editing = true;
+    this.guiHandlerService.editing = this.editing;
+  }
+
+  executeILP() {
+    console.log('executeILP in HOME')
+    this.guiHandlerService.executeILP();
+    this.router.navigate(['/simulation'])
   }
 
 }

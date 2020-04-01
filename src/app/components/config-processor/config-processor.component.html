@@ -14,7 +14,7 @@
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger" style="min-width: 5rem;">ADD:</button>
-                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-ADD"
+                        <button class="btn btn-outline-danger" id="btn-Inst-ADD"
                             ngbDropdownToggle> {{processorSettings.latencyADD}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
@@ -29,7 +29,7 @@
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger" style="min-width: 5rem;">SUB:</button>
-                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-SUB"
+                        <button class="btn btn-outline-danger" id="btn-Inst-SUB"
                             ngbDropdownToggle> {{processorSettings.latencySUB}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
@@ -48,7 +48,7 @@
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger" style="min-width: 5rem;">MUL:</button>
-                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-MUL"
+                        <button class="btn btn-outline-danger" id="btn-Inst-MUL"
                             ngbDropdownToggle> {{processorSettings.latencyMUL}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
@@ -61,7 +61,7 @@
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger" style="min-width: 5rem;">DIV:</button>
-                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-DIV"
+                        <button class="btn btn-outline-danger" id="btn-Inst-DIV"
                             ngbDropdownToggle> {{processorSettings.latencyDIV}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
@@ -78,7 +78,7 @@
                     <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger" style="min-width: 5rem;">ST:</button>
-                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-ST"
+                        <button class="btn btn-outline-danger" id="btn-Inst-ST"
                             ngbDropdownToggle> {{processorSettings.latencyST}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
@@ -91,7 +91,7 @@
                     <div class="btn-group  bpadding-10" ngbDropdown role="group"
                         aria-label="Button group with nested dropdown">
                         <button class="btn btn-outline-danger" style="min-width: 5rem;">LD:</button>
-                        <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-Inst-LD"
+                        <button class="btn btn-outline-danger" id="btn-Inst-LD"
                             ngbDropdownToggle> {{processorSettings.latencyLD}}</button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <button class="dropdown-item" *ngFor="let num of range99    "
@@ -124,7 +124,7 @@
                             <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                                 aria-label="Button group with nested dropdown">
                                 <button class="btn btn-outline-danger" style="min-width: 8rem;">Multifunción:</button>
-                                <button [disabled]="!editingConfigs" id="btn-numMultifunction"
+                                <button id="btn-numMultifunction"
                                     class="btn btn-outline-danger"
                                     ngbDropdownToggle>{{processorSettings.numFUMultifunction}}</button>
                                 <div class="dropdown-menu" ngbDropdownMenu>
@@ -147,7 +147,7 @@
                             <div class="btn-group rpadding-10  bpadding-10" ngbDropdown role="group"
                                 aria-label="Button group with nested dropdown">
                                 <button class="btn btn-outline-danger" style="min-width: 8rem;">Aritmética:</button>
-                                <button [disabled]="!editingConfigs" id="btn-numArithmetic"
+                                <button id="btn-numArithmetic"
                                     class="btn btn-outline-danger"
                                     ngbDropdownToggle>{{processorSettings.numFUArithmetic}}</button>
                                 <div class="dropdown-menu" ngbDropdownMenu>
@@ -170,7 +170,7 @@
                             <div class="btn-group bpadding-10" ngbDropdown role="group"
                                 aria-label="Button group with nested dropdown">
                                 <button class="btn btn-outline-danger" style="min-width: 8rem;">Memoria:</button>
-                                <button [disabled]="!editingConfigs" id="btn-numMemory" class="btn btn-outline-danger"
+                                <button id="btn-numMemory" class="btn btn-outline-danger"
                                     ngbDropdownToggle>{{processorSettings.numFUMemory}}</button>
                                 <div class="dropdown-menu" ngbDropdownMenu>
                                     <button class="dropdown-item" *ngFor="let num of [0,1,2,3,4,5]"
@@ -191,7 +191,7 @@
                         <div class="btn-group bpadding-10" ngbDropdown role="group"
                             aria-label="Button group with nested dropdown">
                             <button class="btn btn-outline-danger">Grado:</button>
-                            <button [disabled]="!editingConfigs" class="btn btn-outline-danger" id="btn-GradoDispatch"
+                            <button class="btn btn-outline-danger" id="btn-GradoDispatch"
                                 ngbDropdownToggle> {{processorSettings.degree}}</button>
                             <div class="dropdown-menu" ngbDropdownMenu>
                                 <button class="dropdown-item" *ngFor="let degree of [1,2,3,4,5]"
@@ -204,41 +204,9 @@
 
         </div>
 
-
-
-
-
-
-
-
-
-
-
-        <div class="row justify-content-md-center align-items-end" style="height: 6rem;">
-            <div class="col">
-
-                <div class="d-flex justify-content-center">
-                    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-                        <button id="btn-save" type="button" class="btn btn-outline-danger" [disabled]="!editingConfigs"
-                            (click)="saveConfiguration()">Guardar
-                        </button>
-                        <button id="btn-reset" type="button" class="btn btn-outline-danger" [disabled]="editingConfigs"
-                            (click)="editConfiguration()">Editar
-                        </button>
-                        <button id="btn-execute" type="button" class="btn btn-outline-danger" [disabled]="!executing"
-                            (click)="executeILP()">Ejecutar
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <div class="row">
+            <p></p>
         </div>
-
-
-
-
-
-
-
 
     </div>
 </div>

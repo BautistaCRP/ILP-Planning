@@ -1,25 +1,36 @@
 <div>
+
     <div class="container mt-4">
         <div class="row">
-            
+
             <div class="col-auto mb-3">
 
                 <div class="row-auto mb-3">
-                    <app-add-instruction></app-add-instruction>
+                    <fieldset [disabled]="!editing">
+                        <app-add-instruction></app-add-instruction>
+                    </fieldset>
                 </div>
 
                 <div class="row-auto mb-3">
-                    <app-instructions-table *ngIf="true"></app-instructions-table>
+                    <fieldset [disabled]="!editing">
+                        <app-instructions-table></app-instructions-table>
+                    </fieldset>
+
                 </div>
             </div>
 
             <div class="col-auto mb-3">
                 <div class="row-auto  mb-3">
-                    <app-config-processor></app-config-processor>
+                    <fieldset [disabled]="!editing">
+                        <app-config-processor></app-config-processor>
+                    </fieldset>
+
                 </div>
 
                 <div class="row-auto  mb-3">
-                    <app-load-examples></app-load-examples>
+                    <fieldset [disabled]="!editing">
+                        <app-load-examples></app-load-examples>
+                    </fieldset>
                 </div>
             </div>
 
@@ -27,8 +38,28 @@
     </div>
 
 
+    <div class="container-fluid">
+        <div class="row" style="padding-top: 1rem; padding-bottom: 1rem;  background-color: rgb(146, 146, 146);">
+            <div class="col">
+                <div class="d-flex justify-content-center">
+                    <div class="btn-group" ngbDropdown role="group">
+                        <button id="btn-save" type="button" class="btn btn-light" [disabled]="!editing"
+                            (click)="saveConfiguration()">Guardar
+                        </button>
+                        <button id="btn-reset" type="button" class="btn btn-light" [disabled]="editing"
+                            (click)="editConfiguration()">Editar
+                        </button>
+                        <button id="btn-execute" type="button" class="btn btn-light" [disabled]="editing"
+                            (click)="executeILP()">Ejecutar
+                        </button>
+                    </div>
+                </div>
 
-    <div class="container">
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="container">
         <div class="row uppadding-10">
             <div class="col- md-12">
                 <ngb-alert type="info" [dismissible]="false">
@@ -37,6 +68,6 @@
                 </ngb-alert>
             </div>
         </div>
-    </div>
+    </div> -->
 
 </div>

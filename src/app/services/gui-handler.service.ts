@@ -1,3 +1,4 @@
+import { ProcessorSettings } from './../models/ProcessorSettings';
 import { GraphNode } from './../models/GraphNode';
 import { Graph } from './../models/Graph';
 import { Diagram } from 'gojs';
@@ -33,31 +34,32 @@ export class GuiHandlerService {
 
   private _simulatorHandler: SimulationHandler;
 
-  private _simulationOn: boolean;
+  private _simulationOn: boolean = false;
   private _simulationOnSubjectQueue: BehaviorSubject<boolean>
     = new BehaviorSubject<boolean>(this._simulationOn);
 
 
-  private _isFinish: boolean;
+  private _isFinish: boolean = false;
   private _isFinishSubjectQueue: BehaviorSubject<boolean>
     = new BehaviorSubject<boolean>(this._isFinish);
 
-  private _editingConfigs: boolean = true;
-  private _editingConfigsSubjectQueue: BehaviorSubject<boolean>
-    = new BehaviorSubject<boolean>(this._editingConfigs);
+  private _editing: boolean = true;
+  private _editingSubjectQueue: BehaviorSubject<boolean>
+    = new BehaviorSubject<boolean>(this._editing);
 
   private _executing: boolean = false;
   private _executingSubjectQueue: BehaviorSubject<boolean>
     = new BehaviorSubject<boolean>(this._executing);
 
 
+  private _requestPS: boolean; // PS == ProcessorSettings
+  private _requestPSSubjectQueue: BehaviorSubject<boolean>
+    = new BehaviorSubject<boolean>(this._requestPS);
+
+
 
   constructor() {
     this.initExample3();
-    this._simulationOn = false;
-    this._isFinish = false;
-    this._isFinishSubjectQueue.next(this._isFinish);
-    this._simulationOnSubjectQueue.next(this._simulationOn);
   }
 
   private initExample1() {
@@ -95,20 +97,20 @@ export class GuiHandlerService {
   }
 
 
-  public loadExample1(){
-    this._instructions =  new Array<Instruction>();
+  public loadExample1() {
+    this._instructions = new Array<Instruction>();
     this.initExample1();
     this._instructionsSubjectQueue.next(this._instructions);
   }
 
-  public loadExample2(){
-    this._instructions =  new Array<Instruction>();
+  public loadExample2() {
+    this._instructions = new Array<Instruction>();
     this.initExample2();
     this._instructionsSubjectQueue.next(this._instructions);
   }
 
-  public loadExample3(){
-    this._instructions =  new Array<Instruction>();
+  public loadExample3() {
+    this._instructions = new Array<Instruction>();
     this.initExample3();
     this._instructionsSubjectQueue.next(this._instructions);
   }
@@ -129,8 +131,8 @@ export class GuiHandlerService {
     }
   }
 
-  clearInstructions(){
-    this._instructions =  new Array<Instruction>();
+  clearInstructions() {
+    this._instructions = new Array<Instruction>();
     this._instructionsSubjectQueue.next(this._instructions);
   }
 
@@ -191,9 +193,9 @@ export class GuiHandlerService {
   }
 
   public saveCPUConfiguration(processorSettings: ProcessorSettings) {
-    this._editingConfigs = false;
+    this._editing = false;
     this._executing = true;
-    this._editingConfigsSubjectQueue.next(this._editingConfigs);
+    this._editingSubjectQueue.next(this._editing);
     this._executingSubjectQueue.next(this._executing);
     this.processorSettings = processorSettings;
     this._simulationOn = false;
@@ -219,27 +221,44 @@ export class GuiHandlerService {
   }
 
   public executeILP() {
-    if (this._simulationOn)
-      this.restartSimulation();
-    else {
-      this._simulatorHandler = new SimulationHandler(this._instructions, this._processorSettings);
-      this._simulationOn = true;
-      this._simulationOnSubjectQueue.next(this._simulationOn);
-      this._simulationSteps = new Array<SimulationStep>();
-      this._simulationStepsSubjectQueue.next(this._simulationSteps);
-    }
+    console.log('executeILP in SERVICE')
+    this.startSimulation()
   }
 
-  public restartSimulation() {
+  public startSimulation() {
+    // Create a new instance of the simulation 
     this._simulatorHandler = new SimulationHandler(this._instructions, this._processorSettings);
-    this._isFinish = false;
-    this._isFinishSubjectQueue.next(this._isFinish);
-    this.drawDiagram(this._simulatorHandler.getGraph());
-    this._simulationOn = true;
-    this._simulationOnSubjectQueue.next(this._simulationOn);
+
+    // Reset the rows in the simulation table
     this._simulationSteps = new Array<SimulationStep>();
     this._simulationStepsSubjectQueue.next(this._simulationSteps);
 
+    this._simulationOn = true;
+    this._simulationOnSubjectQueue.next(this._simulationOn);
+
+    this._isFinish = false;
+    this._isFinishSubjectQueue.next(this._isFinish);
+
+    // * The graph is generated and drawn when the graph-view component is init 
+
+  }
+
+  public endSimulation() {
+    this._simulatorHandler = null;
+
+    this._simulationOn = false;
+    this._simulationOnSubjectQueue.next(this._simulationOn);
+
+    this._isFinish = false;
+    this._isFinishSubjectQueue.next(this._isFinish);
+  }
+
+  public restartSimulation() {
+    this.endSimulation();
+    this.startSimulation();
+
+    // The graph is reseted using the one that is generated in the new simulation handler instance 
+    this.drawDiagram(this._simulatorHandler.getGraph());
   }
 
   public get planificatedOrder(): string {
@@ -253,11 +272,25 @@ export class GuiHandlerService {
     return out;
   }
 
+  public get editing(): boolean {
+    return this._editing;
+  }
+
+  public set editing(editing: boolean) {
+    this._editing = editing;
+    this._editingSubjectQueue.next(this._editing);
+    if (this.editing == false) { // Save button was pressed
+      this._requestPSSubjectQueue.next(this._requestPS);
+    } else { // Edit button was pressed
+      this.endSimulation();
+    }
+  }
+
 
   // ~~~~~~~~~~~~~~~~~~~~ obsevable getters ~~~~~~~~~~~~~~~~~~~~
 
-  public get observableEditingConfigs(): Observable<boolean> {
-    return this._editingConfigsSubjectQueue.asObservable();
+  public get observableEditing(): Observable<boolean> {
+    return this._editingSubjectQueue.asObservable();
   }
 
   public get observableExecuting(): Observable<boolean> {
@@ -276,6 +309,10 @@ export class GuiHandlerService {
     return this._simulationStepsSubjectQueue.asObservable();
   }
 
+  public get observableRequestPS(): Observable<boolean> {
+    return this._requestPSSubjectQueue.asObservable();
+  }
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~ DIAGRAM ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -286,10 +323,6 @@ export class GuiHandlerService {
 
   private nodeDataArray: Array<Object>;
   private linkDataArray: Array<Object>;
-
-  public get diagram(): Diagram {
-    return this._diagram;
-  }
 
   public get observableDiagram(): Observable<Diagram> {
     return this._diagramSubjectQueue.asObservable();
@@ -303,6 +336,10 @@ export class GuiHandlerService {
     return this._isFinishSubjectQueue.asObservable();
   }
 
+  public get diagram(): Diagram {
+    return this._diagram;
+  }
+  
   public set diagram(diagram: Diagram) {
     this._diagram = diagram;
     this._diagramSubjectQueue.next(this.diagram);

@@ -8,3 +8,10 @@
 .grid-container {
     grid-gap: 5px;
 }
+
+
+.btn-outline-danger:disabled {
+    color:gray;
+    border-color: gray;
+}
+

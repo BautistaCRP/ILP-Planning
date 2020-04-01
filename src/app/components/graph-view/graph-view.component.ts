@@ -20,6 +20,7 @@ export class GraphViewComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.guiHandlerService.observableDiagram.subscribe( diagram => {
       this.diagram = diagram;
     });
@@ -29,10 +30,7 @@ export class GraphViewComponent implements OnInit {
     this.diagram.allowZoom = true;
     this.diagram.toolManager.mouseWheelBehavior = go.ToolManager.WheelZoom;
     this.diagram.contentAlignment = go.Spot.Center;
- 
-
     this.guiHandlerService.diagram = this.diagram;
-
 
   }
 
