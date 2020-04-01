@@ -125,10 +125,10 @@ export class Planner {
     let i: number = 0;
     while (i < this.PS.length) {
       if (this.getFreeFU(this.PS[i].getInstruction(), fu) == -1) {
-        console.log("eliminar por falta de FU");
+        // Eliminar por falta de FU
         this.PS.splice(i, 1);
       } else if (this.graph.hasDependencies(this.PS[i])) {
-        console.log("eliminar por dep");
+        // Eliminar por dep
         this.PS.splice(i, 1);
       } else {
         i++;
@@ -170,9 +170,9 @@ export class Planner {
     //eliminación en el grafo los nodos elejidos
     this.instructionsSelected.forEach((node) => {
       node.getDependencies().forEach((nodeDep) => {
-        console.log("node: " + node.getId());
-        console.log("ET: " + (node.getInstLatency() + cycle));
-        console.log("ET a: " + nodeDep.getId());
+        // console.log("node: " + node.getId());
+        // console.log("ET: " + (node.getInstLatency() + cycle));
+        // console.log("ET a: " + nodeDep.getId());
         this.graph.setETNode(nodeDep.getId(), node.getInstLatency() + cycle);
       });
 

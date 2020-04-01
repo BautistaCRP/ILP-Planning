@@ -153,7 +153,6 @@ export class GuiHandlerService {
   public set processorSettings(value: ProcessorSettings) {
     this._processorSettings = value;
     this.__processorSettingsSubjectQueue.next(this._processorSettings)
-    console.log('set processorSettings: ', this.processorSettings);
     this.updateAllInstructionsCycles();
   }
 
@@ -220,7 +219,6 @@ export class GuiHandlerService {
   }
 
   public executeILP() {
-    console.log('executeILP in SERVICE')
     this.startSimulation()
   }
 

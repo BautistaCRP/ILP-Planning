@@ -43,10 +43,7 @@ export class Processor {
 
     let instructionsSelected: Array<GraphNode> = this.planner.getInstructionsSelected(this.cycleCounter, this.degree, this.fus);
 
-    console.log("Ciclo " + this.cycleCounter + ":" + "  Seleccionadas:");
     instructionsSelected.forEach((instr) => {
-      console.log(instr.getId());
-
       let posFU: number = this.getFreeFUIndex(instr.getInstruction());
       this.fus[posFU].addInstruction(instr.getInstruction());
     });

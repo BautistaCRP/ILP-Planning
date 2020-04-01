@@ -32,7 +32,6 @@ export class FunctionalUnit {
     }
 
     if (this.countdown === 0) {
-      console.log("FU fin de instruccion" + this.instruction.getId());
       this.instruction.setStatus(InstStatus.DONE);
       this.busy = false;
       this.instruction = null;

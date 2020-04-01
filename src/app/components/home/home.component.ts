@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
   }
 
   executeILP() {
-    console.log('executeILP in HOME')
     this.guiHandlerService.executeILP();
     this.router.navigate(['/simulation'])
   }

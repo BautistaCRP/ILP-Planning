@@ -2,9 +2,11 @@ import { GraphNode } from './GraphNode';
 
 export class Graph {
   private nodes: Map<number, GraphNode>;
+  private rootNodes: GraphNode[];
 
   constructor() {
     this.nodes = new Map<number, GraphNode>();
+    this.rootNodes = [];
   }
 
   public addNode(id: number, node: GraphNode) {
@@ -18,17 +20,28 @@ export class Graph {
           node.addDependence(otherNode);
       });
     });
+
+    this.initRootNodes();
+  }
+
+  private initRootNodes(){
+    let dependenciesIDs: Set<number> = new Set<number>();
+
+    this.nodes.forEach((node: GraphNode, id: number) => {
+      node.getDependencies().forEach( (depNode: GraphNode) => { 
+        dependenciesIDs.add(depNode.getId());
+      });
+    });
+    
+    this.nodes.forEach((node: GraphNode, id: number) => {
+      if(!dependenciesIDs.has(id)){
+        this.rootNodes.push(node);
+      }
+    });
   }
 
   public getRootNodes(): GraphNode[] {
-    const out: GraphNode[] = [];
-
-    this.nodes.forEach((node: GraphNode, id: number) => {
-      if (this.nodes.get(id).getInstruction().getType() == 'LD')
-        out.push(node);
-    });
-
-    return out;
+    return this.rootNodes;
   }
 
   public getAllNodes(): GraphNode[] {
@@ -131,20 +144,6 @@ export class Graph {
       }
     });
 
-    console.log("Paths: ");
-    for (let i = 0; i < allPaths.length; i++) {
-      let path: string = "";
-      for (let j = 0; j < allPaths[i].length; j++) {
-        path += allPaths[i][j].getInstruction().getId();
-
-        if (allPaths[i][j].isCritical())
-          path += " C ";
-
-
-        path += " -> ";
-      }
-      console.log(path);
-    }
   }
 
   public isCriticalNode(id: number) {
@@ -158,7 +157,6 @@ export class Graph {
 
     this.nodes.forEach((node: GraphNode, id: number) => {
       if ((node.getET() <= value) && (node.getET() != -1)) {
-        console.log("node id: " + node.getId() + " ET: " + node.getET());
         nodesOut.push(node);
       }
     });
