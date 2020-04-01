@@ -1,4 +1,3 @@
-import { ProcessorSettings } from './../models/ProcessorSettings';
 import { GraphNode } from './../models/GraphNode';
 import { Graph } from './../models/Graph';
 import { Diagram } from 'gojs';
