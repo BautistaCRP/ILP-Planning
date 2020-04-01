@@ -1,7 +1,6 @@
 import { GuiHandlerService } from './../../services/gui-handler.service';
 import { Component, OnInit } from '@angular/core';
-import { Instruction, InstType } from 'src/app/models/Instruction';
-import { FUType } from 'src/app/models/FunctionalUnit';
+import { Instruction } from 'src/app/models/Instruction';
 
 @Component({
   selector: 'app-instructions-table',

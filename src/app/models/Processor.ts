@@ -1,7 +1,8 @@
-import { FunctionalUnit, FUType } from './FunctionalUnit';
-import { Instruction, InstStatus } from './Instruction';
+import { FunctionalUnit } from './FunctionalUnit';
+import { Instruction } from './Instruction';
 import { Planner } from "./Planner";
 import { GraphNode } from "./GraphNode";
+import { FUType } from './Enums';
 
 export class Processor {
 

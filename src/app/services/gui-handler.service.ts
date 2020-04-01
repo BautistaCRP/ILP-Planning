@@ -4,12 +4,12 @@ import { Diagram } from 'gojs';
 import * as go from 'gojs';
 import { SimulationStep } from './../models/SimulationStep';
 import { ProcessorSettings } from '../models/ProcessorSettings';
-import { FUType } from 'src/app/models/FunctionalUnit';
-import { Instruction, InstType } from 'src/app/models/Instruction';
+import { Instruction } from 'src/app/models/Instruction';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Processor } from '../models/Processor';
 import { SimulationHandler } from "../models/SimulationHandler";
+import { FUType, InstType } from '../models/Enums';
 
 @Injectable({
   providedIn: 'root'

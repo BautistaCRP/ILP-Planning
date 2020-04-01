@@ -1,17 +1,5 @@
-import { FUType } from './FunctionalUnit';
+import { FUType, InstType, InstStatus } from './Enums';
 
-export enum InstStatus {
-    WAITING, IN_PROGRESS, DONE
-}
-
-export enum InstType {
-    ADD = 'ADD',
-    SUB = 'SUB',
-    MUL = 'MUL',
-    DIV = 'DIV',
-    ST = 'ST',
-    LD = 'LD'
-}
 
 export class Instruction {
     private id: number;

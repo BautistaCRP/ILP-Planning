@@ -1,8 +1,6 @@
-import {Instruction, InstStatus} from '../models/Instruction';
+import {Instruction} from '../models/Instruction';
+import { FUType, InstStatus } from './Enums';
 
-export enum FUType {
-  ARITHMETIC, MEMORY, MULTIFUNCTION
-}
 
 export class FunctionalUnit {
 

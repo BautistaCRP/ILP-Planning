@@ -1,7 +1,8 @@
-import { Instruction, InstType } from './Instruction';
+import { Instruction } from './Instruction';
 import { Graph } from './Graph';
 import { GraphNode } from './GraphNode';
-import { FunctionalUnit, FUType } from './FunctionalUnit';
+import { FunctionalUnit } from './FunctionalUnit';
+import { InstType, FUType } from './Enums';
 
 export class Planner {
 
