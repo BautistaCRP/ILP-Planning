@@ -75,7 +75,7 @@ export class GuiHandlerService {
     this._instructions.push(new Instruction(1, InstType.LD, FUType.MEMORY, 1, 10));
     this._instructions.push(new Instruction(2, InstType.LD, FUType.MEMORY, 2, 11));
     this._instructions.push(new Instruction(3, InstType.MUL, FUType.ARITHMETIC, 3, 1, 2));
-    this._instructions.push(new Instruction(4, InstType.ST, FUType.MEMORY, 12, 13));
+    this._instructions.push(new Instruction(4, InstType.ST, FUType.MEMORY, 12, 3));
     this._instructions.push(new Instruction(5, InstType.LD, FUType.MEMORY, 4, 13));
     this._instructions.push(new Instruction(6, InstType.LD, FUType.MEMORY, 5, 14));
     this._instructions.push(new Instruction(7, InstType.DIV, FUType.ARITHMETIC, 6, 5, 4));
