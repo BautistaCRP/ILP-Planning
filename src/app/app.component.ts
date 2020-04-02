@@ -6,11 +6,12 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   title = 'ILP-Planning';
 
   private guiHandlerService: GuiHandlerService;
-
+  closed: boolean = false;
 
   /*
     TODO: To deploy in Github Pages use this commands:
@@ -24,8 +25,13 @@ export class AppComponent {
       this.guiHandlerService = guiHandlerService;
   }
 
-  ngOnInit() { 
+  // closeDevelopersAlert(app:AppComponent) {
+  //   console.log('in close method')
+  //   app.closed = true;
+  // }
 
+  ngOnInit() { 
+    // setTimeout(this.closeDevelopersAlert, 5000, this);
   }  
 
 

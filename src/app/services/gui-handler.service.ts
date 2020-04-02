@@ -58,7 +58,7 @@ export class GuiHandlerService {
 
 
   constructor() {
-    // this.initExample3();
+    
   }
 
   private initExample1() {

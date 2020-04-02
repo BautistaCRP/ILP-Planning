@@ -18,6 +18,7 @@ import {MatToolbarModule, MatButtonModule, MatIconModule} from '@angular/materia
 import { SimulationResultComponent } from './components/simulation-result/simulation-result.component';
 import { LoadExamplesComponent } from './components/load-examples/load-examples.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,7 @@ import { LoadExamplesComponent } from './components/load-examples/load-examples.
     AppRoutingModule,
     MatToolbarModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
   ],
   providers: [GuiHandlerService],
   bootstrap: [AppComponent]
