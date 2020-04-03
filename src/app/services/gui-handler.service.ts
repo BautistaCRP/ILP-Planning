@@ -28,7 +28,7 @@ export class GuiHandlerService {
 
 
   private _processorSettings: ProcessorSettings = new ProcessorSettings();
-  private __processorSettingsSubjectQueue: BehaviorSubject<ProcessorSettings>
+  private _processorSettingsSubjectQueue: BehaviorSubject<ProcessorSettings>
     = new BehaviorSubject<ProcessorSettings>(this._processorSettings);
 
   private _simulatorHandler: SimulationHandler;
@@ -69,7 +69,7 @@ export class GuiHandlerService {
 
     this._processorSettings.degree = 3;
     this._processorSettings.numFUMemory = 2;
-    this.__processorSettingsSubjectQueue.next(this._processorSettings);
+    this._processorSettingsSubjectQueue.next(this._processorSettings);
 
   }
 
@@ -164,7 +164,7 @@ export class GuiHandlerService {
 
   public set processorSettings(value: ProcessorSettings) {
     this._processorSettings = value;
-    this.__processorSettingsSubjectQueue.next(this._processorSettings);
+    this._processorSettingsSubjectQueue.next(this._processorSettings);
     this.updateAllInstructionsCycles();
   }
 
@@ -311,7 +311,7 @@ export class GuiHandlerService {
   }
 
   public get observableProcessorSettings(): Observable<ProcessorSettings> {
-    return this.__processorSettingsSubjectQueue.asObservable();
+    return this._processorSettingsSubjectQueue.asObservable();
   }
 
   public get observableSimulationSteps(): Observable<SimulationStep[]> {

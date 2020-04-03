@@ -164,9 +164,7 @@ export class Planner {
   }
 
   private updateInstructionsSelected(degree: number, freeFUs: Array<FunctionalUnit>) {
-    let instructions: Array<GraphNode> = new Array<GraphNode>();
-    let ps: Array<GraphNode> = new Array<GraphNode>();
-
+    
     let selected: Array<GraphNode> = new Array<GraphNode>();
     let memFUcount: number = 0;
     let aritFUcount: number = 0;
