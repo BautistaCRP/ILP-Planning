@@ -19,9 +19,10 @@ export class Planner {
   }
 
 
-  public getInstructionsSelected(cycle: number, grado: number, fu: Array<FunctionalUnit>): Array<GraphNode> {
-    this.buildPS(fu, cycle);
-    this.updateInstructionsSelected(grado, fu);
+  public getInstructionsSelected(cycle: number, degree: number, freeFUs: Array<FunctionalUnit>): Array<GraphNode> {
+
+    this.buildPS(freeFUs, cycle);
+    this.updateInstructionsSelected(degree, freeFUs);
     this.updateGraph(cycle);
 
     return this.instructionsSelected;
@@ -108,24 +109,33 @@ export class Planner {
     }
   }
 
-  private getFreeFU(inst: Instruction, fu: Array<FunctionalUnit>): number {
+  private getFUIndex(inst: Instruction, fu: Array<FunctionalUnit>): number {
     for (let i = 0; i < fu.length; i++) {
-      if (!fu[i].isBusy() && fu[i].getType() === inst.getFUType()) {
-        return i;
-      } else if ((!fu[i].isBusy() && fu[i].getType() === FUType.MULTIFUNCTION)) {
+      if (fu[i].getType() === inst.getFUType() || fu[i].getType() === FUType.MULTIFUNCTION) {
         return i;
       }
+      return -1;
     }
-    return -1;
   }
 
-  private buildPS(fu: Array<FunctionalUnit>, cycle: number) {
+  private aux(arr: Array<GraphNode>): string {
+    let out = '\n';
+    arr.forEach(node => {
+      out = out.concat(node.toString(), '\n');
+    });
+
+    return out;
+  }
+
+  private buildPS(fus: Array<FunctionalUnit>, cycle: number) {
+
+
     this.PS = this.graph.getNodesByET(cycle);
 
     //Elimino instrucciones que no pueden ser ejecutadas por falta de unidad funcional o dependecia
     let i: number = 0;
     while (i < this.PS.length) {
-      if (this.getFreeFU(this.PS[i].getInstruction(), fu) == -1) {
+      if (this.getFUIndex(this.PS[i].getInstruction(), fus) == -1) {
         // Eliminar por falta de FU
         this.PS.splice(i, 1);
       } else if (this.graph.hasDependencies(this.PS[i])) {
@@ -136,34 +146,70 @@ export class Planner {
       }
     }
 
-    //Ordeno el conjunto de planificable segun nodos criticos
+    //Ordeno el conjunto de planificable segun nodos criticos y cant  de dependenicias
     this.PS.sort(function (a, b) {
-      if (a.isCritical())
-        return -1;
-      else
-        return 1;
-    })
+      if (a.isCritical() !== b.isCritical())
+        if (a.isCritical())
+          return -1; // a es critico y b no
+        else
+          return 1; // b es critico y b no
+
+      else { // ambos pertenecen a la misma categoria, aca va el segundo criterio de ordenamiento
+
+        // tiene mayor precedencia el que mas dependencias tenga 
+        return b.getDependencies().length - a.getDependencies().length;
+      }
+    });
 
   }
 
-  private updateInstructionsSelected(grado: number, fu: Array<FunctionalUnit>) {
+  private updateInstructionsSelected(degree: number, freeFUs: Array<FunctionalUnit>) {
     let instructions: Array<GraphNode> = new Array<GraphNode>();
     let ps: Array<GraphNode> = new Array<GraphNode>();
 
+    let selected: Array<GraphNode> = new Array<GraphNode>();
+    let memFUcount: number = 0;
+    let aritFUcount: number = 0;
+    let multFUcount: number = 0;
+
+    freeFUs.forEach(fu => {
+      if (fu.getType() === FUType.MEMORY)
+        memFUcount++;
+
+      if (fu.getType() === FUType.ARITHMETIC)
+        aritFUcount++;
+
+      if (fu.getType() === FUType.MULTIFUNCTION)
+        multFUcount++;
+    });
+
     this.PS.forEach((node) => {
-      ps.push(node);
+      if (selected.length < degree) {
+
+        if (node.getInstruction().getFUType() === FUType.MEMORY) {
+          if (memFUcount > 0) {
+            memFUcount--;
+            selected.push(node);
+          } else if (multFUcount > 0) {
+            multFUcount--;
+            selected.push(node);
+          }
+        }
+
+        if (node.getInstruction().getFUType() === FUType.ARITHMETIC) {
+          if (aritFUcount > 0) {
+            aritFUcount--;
+            selected.push(node);
+          } else if (multFUcount > 0) {
+            multFUcount--;
+            selected.push(node);
+          }
+        }
+
+      }
     });
 
-    //Elijo del conjunto de planificable las n instrucciones. n = grado
-    while (ps.length > grado) {
-      ps.pop();
-    }
-
-    ps.forEach((node) => {
-      instructions.push(node);
-    });
-
-    this.instructionsSelected = instructions;
+    this.instructionsSelected = selected;
   }
 
   private updateGraph(cycle: number) {
@@ -171,9 +217,6 @@ export class Planner {
     //eliminación en el grafo los nodos elejidos
     this.instructionsSelected.forEach((node) => {
       node.getDependencies().forEach((nodeDep) => {
-        // console.log("node: " + node.getId());
-        // console.log("ET: " + (node.getInstLatency() + cycle));
-        // console.log("ET a: " + nodeDep.getId());
         this.graph.setETNode(nodeDep.getId(), node.getInstLatency() + cycle);
       });
 

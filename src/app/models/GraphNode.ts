@@ -75,4 +75,13 @@ export class GraphNode {
   public equals(otherNode: GraphNode) {
     return this.id === otherNode.getId();
   }
+
+  public toString(): string {
+    let out:string = '';
+
+    out = out.concat('id: ', this.id.toString(),' C: ',this.isCriticalNode.toString(), ' dep: ',this.listDependencies.length.toString());
+    
+    return out;
+  }
+  
 }

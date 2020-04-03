@@ -105,7 +105,6 @@ export class AddInstructionComponent implements OnInit {
         break;
       }
     }
-    console.log(newInstruction.toString());
 
     this.guiHandler.addInstruction(newInstruction);
 

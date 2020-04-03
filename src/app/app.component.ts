@@ -14,7 +14,7 @@ export class AppComponent {
   closed: boolean = false;
 
   /*
-    TODO: To deploy in Github Pages use this commands:
+    ANCHOR: To deploy in Github Pages use this commands:
     ng build --prod --base-href "https://bautistacrp.github.io/ILP-Planning/"
     * Copy the 404.html file into de dist/ILP-Planning folder
     ngh --dir=dist/ILP-Planning

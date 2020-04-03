@@ -152,11 +152,11 @@ export class Graph {
     }
   }
 
-  public getNodesByET(value: number): Array<GraphNode> {
+  public getNodesByET(cycle: number): Array<GraphNode> {
     let nodesOut: Array<GraphNode> = new Array<GraphNode>();
 
     this.nodes.forEach((node: GraphNode, id: number) => {
-      if ((node.getET() <= value) && (node.getET() != -1)) {
+      if ((node.getET() <= cycle) && (node.getET() != -1)) {
         nodesOut.push(node);
       }
     });

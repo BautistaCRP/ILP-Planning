@@ -58,7 +58,19 @@ export class GuiHandlerService {
 
 
   constructor() {
-    
+    // this.initDebugExaple();
+  }
+
+  private initDebugExaple() {
+    this._instructions.push(new Instruction(1, InstType.LD, FUType.MEMORY, 1, 0));
+    this._instructions.push(new Instruction(2, InstType.LD, FUType.MEMORY, 2, 0));
+    this._instructions.push(new Instruction(3, InstType.LD, FUType.MEMORY, 3, 0));
+    this._instructionsSubjectQueue.next(this._instructions);
+
+    this._processorSettings.degree = 3;
+    this._processorSettings.numFUMemory = 2;
+    this.__processorSettingsSubjectQueue.next(this._processorSettings);
+
   }
 
   private initExample1() {
@@ -152,7 +164,7 @@ export class GuiHandlerService {
 
   public set processorSettings(value: ProcessorSettings) {
     this._processorSettings = value;
-    this.__processorSettingsSubjectQueue.next(this._processorSettings)
+    this.__processorSettingsSubjectQueue.next(this._processorSettings);
     this.updateAllInstructionsCycles();
   }
 

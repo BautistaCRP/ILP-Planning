@@ -42,7 +42,7 @@ export class Processor {
   public nextCycle(): void {
     this.updateFUs();
 
-    let instructionsSelected: Array<GraphNode> = this.planner.getInstructionsSelected(this.cycleCounter, this.degree, this.fus);
+    let instructionsSelected: Array<GraphNode> = this.planner.getInstructionsSelected(this.cycleCounter, this.degree, this.getFreeFUs());
 
     instructionsSelected.forEach((instr) => {
       let posFU: number = this.getFreeFUIndex(instr.getInstruction());
@@ -50,6 +50,17 @@ export class Processor {
     });
 
     this.cycleCounter += 1;
+  }
+
+  private getFreeFUs(): Array<FunctionalUnit> {
+    let out: Array<FunctionalUnit> = new Array<FunctionalUnit>();
+
+    this.fus.forEach(fu => {
+      if(!fu.isBusy())
+        out.push(fu);
+    });
+
+    return out;
   }
 
   private getFreeFUIndex(inst: Instruction):number {
